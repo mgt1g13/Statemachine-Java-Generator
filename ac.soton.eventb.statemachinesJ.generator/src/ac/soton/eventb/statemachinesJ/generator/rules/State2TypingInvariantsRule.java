@@ -31,14 +31,16 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
+		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		State sourceState = (State) sourceElement;
+		if(sourceState.getRefines() != null) return ret; //Does nothing if it does not refine anything
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceState);
 	
 		Invariant newInvariant = Make.invariant(Strings.TYPEOF_ + sourceState.getName(), generatePredicate(sourceState), "");
 		
 		//TODO Attributes???
 
-		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
+		
 		
 		ret.add(Make.descriptor(container, invariants, newInvariant, 1));
 		return ret;
