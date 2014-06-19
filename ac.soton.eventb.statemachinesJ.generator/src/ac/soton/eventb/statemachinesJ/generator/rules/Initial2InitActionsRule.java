@@ -163,12 +163,12 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	private List<Action> state2initActionsActive(State s, Event v, State target){
 		List<Action> ret = new ArrayList<Action>();
 		String value;
-		if(Utils.getRootStatemachine(s).getInstances() == null)
-		//if(rootSm.getInstances() == null)
+		//if(Utils.getRootStatemachine(s).getInstances() == null)
+		if(rootSm.getInstances() == null)
 			value = Strings.B_TRUE;
 		else
-			value = Utils.getRootStatemachine(s).getInstances().getName();
 			//value = Utils.getRootStatemachine(s).getInstances().getName();
+			value = rootSm.getInstances().getName();
 		if(generatedStatus.get(s) == null)
 			ret.add(state2initAction(s, value));
 
@@ -185,12 +185,12 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	private List<Action> superState2initActionsActive(State s, Event event){
 		List<Action> ret = new ArrayList<Action>();
 		String value;
-		if(Utils.getRootStatemachine(s).getInstances() == null)
-//		if(rootSm.getInstances() == null)
+//		if(Utils.getRootStatemachine(s).getInstances() == null)
+		if(rootSm.getInstances() == null)
 			value = Strings.B_TRUE;
 		else
-			value = Utils.getRootStatemachine(s).getInstances().getName();
-			//value = rootSm.getInstances().getName();
+//			value = Utils.getRootStatemachine(s).getInstances().getName();
+			value = rootSm.getInstances().getName();
 		if(generatedStatus.get(s) == null)
 			ret.add(state2initAction(s, value));
 
