@@ -16,9 +16,16 @@ import ac.soton.eventb.statemachines.Transition;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
+
+/**
+ * Works for both kinds of translations
+ * @author matheus
+ *
+ */
+
 public class Transition2ParameterRule extends AbstractRule  implements IRule {
 
-	
+	//TODO Check what happens if there is already a parameters with the generated name
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		return true;
