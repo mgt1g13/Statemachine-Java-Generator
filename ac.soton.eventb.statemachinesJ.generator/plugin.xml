@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension
+      name="EventB Diagrams"
+      point="org.eclipse.ui.menus">
+    <menuContribution
+        	allPopups="true"
+        	locationURI="toolbar:ac.soton.eventb.emf.diagrams.toolbar?after=validations">
+     		<command
+           		  commandId="ac.soton.eventb.statemachinesJ.generator.generateEventBJ"
+           		  icon="icons/UtoBJ.png"
+           		  label="generate"
+         		  style="push">
+		     </command>	
+  		</menuContribution>
+	</extension>
+	
+	<extension
+     	point="org.eclipse.ui.commands">
+  		<command
+       		 description="command.description.generate"
+      	 	 id="ac.soton.eventb.statemachinesJ.generator.generateEventBJ"
+       		 name="command.name.generate">
+ 	    </command>
+  	</extension>
+
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ac.soton.eventb.statemachinesJ.generator.TranslateAction"
+            commandId="ac.soton.eventb.statemachinesJ.generator.generateEventBJ">
+         <enabledWhen>
+            <and>
+               <with
+                     variable="activeEditor">
+                  <instanceof
+                        value="org.eclipse.gmf.runtime.diagram.ui.resources.editor.parts.DiagramDocumentEditor">
+                  </instanceof>
+               </with>
+            </and>
+         </enabledWhen>
+      </handler>
+     </extension>
+     
+     
+     
+     <extension
+         id="ac.soton.eventb.emf.diagrams.generator"
+         point="ac.soton.eventb.emf.diagrams.generator.rule">
+      <generator
+            generatorID="ac.soton.eventb.classdiagrams.generator"
+            name="Statemachine Generator"
+            root_source_class="Statemachine"
+            sourcePackage="http://soton.ac.uk/models/eventb/statemachines/2014">
+         <rule
+               name="State2Variables"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2VariablesRule"
+               source_class="State">
+         </rule>
+         <rule
+               name="State2TypingInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2TypingInvariantsRule"
+               source_class="State">
+         </rule>
+		 <rule
+               name="Statemachine2PartitionInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Statemachine2PartitionInvariantsRule"
+               source_class="Statemachine">
+         </rule>
+         <rule
+               name="State2SubstateInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2SubstateInvariantRule"
+               source_class="State">
+         </rule>
+         <rule
+               name="State2ConstraintInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2ConstraintInvariantsRule"
+               source_class="State">
+         </rule>
+         <rule
+               name="Initial2InitActions"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsRule"
+               source_class="Initial">
+         </rule>
+        </generator>
+     </extension>
+     
+</plugin>
