@@ -43,11 +43,10 @@ public class State2ConstraintInvariantsRule extends AbstractRule  implements IRu
 		for(Invariant inv : sourceState.getInvariants()){
 			newInvariants.add(Make.invariant(inv.getName(),
 					generatePredicate(sourceState, inv), ""));
-
 		}
+		
 		for (Invariant inv : newInvariants){
 			ret.add(Make.descriptor(container, invariants, inv, 10));
-
 		}
 
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eventb.emf.core.machine.Event;
+import org.eventb.emf.core.machine.Parameter;
 
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Final;
@@ -287,6 +288,27 @@ public class Utils {
 				ret.add(s);
 		
 		return ret;
+	}
+	
+	/**
+	 * Returns true if event and its extensions contain an parameter of specified label.
+	 * @param event
+	 * @param label
+	 * @return
+	 */
+	public static boolean containsGuardWithName(Event event, String label){
+		for(Parameter p : event.getParameters()){
+			if(p.getName().equals(label)){
+				return true;
+			}
+			
+			
+		}
+		
+		if(event.isExtended() && containsGuardWithName(event.getRefines().get(0), label))
+			return true;
+		
+		return false;
 	}
 	
 	
