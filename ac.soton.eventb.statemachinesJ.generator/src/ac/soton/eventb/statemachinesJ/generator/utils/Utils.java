@@ -3,6 +3,7 @@ package ac.soton.eventb.statemachinesJ.generator.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eventb.emf.core.machine.Action;
 import org.eventb.emf.core.machine.Event;
 import org.eventb.emf.core.machine.Parameter;
 
@@ -307,6 +308,45 @@ public class Utils {
 		
 		if(event.isExtended() && containsGuardWithName(event.getRefines().get(0), label))
 			return true;
+		
+		return false;
+	}
+	
+	
+	
+	public static List<AbstractNode> getAllTrueSources(Transition t){
+		List<AbstractNode> ret = new ArrayList<AbstractNode>();
+		if(t.getSource() instanceof Junction){
+			for(Transition it : t.getSource().getIncoming())
+				ret.addAll(getAllTrueSources(it));
+		}
+		else
+			ret.add(t.getSource());
+		return ret;
+	}
+	
+	
+	
+	public static List<AbstractNode> getCommonSourceSuperstates(Transition t, List<AbstractNode> base){
+		List<AbstractNode> ret = base;
+		for(AbstractNode ts : getAllTrueSources(t)){
+			List<AbstractNode> superStates = getSuperStates(ts);
+			ret.retainAll(superStates);
+			
+		}
+		return ret;
+	}
+	
+	
+	public static boolean containsAction(Event event, String label){
+		for(Action action : event.getActions()){
+			if(action.getName().equals(label))
+				return true;
+		}
+		
+		if(event.isExtended() && containsAction(event.getRefines().get(0), label))
+			return true;
+			
 		
 		return false;
 	}
