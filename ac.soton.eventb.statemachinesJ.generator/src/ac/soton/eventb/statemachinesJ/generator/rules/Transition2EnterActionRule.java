@@ -24,7 +24,16 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 	
 	private Statemachine rootSM;
 	
-
+	/**
+	 * Rule should only fire on non circular transitions
+	 * 
+	 */
+	@Override
+	public boolean enabled(EventBElement sourceElement) throws Exception{
+		Transition sourceTransition = (Transition) sourceElement;
+		if(sourceTransition.getSource().equals(sourceTransition.getTarget())) return false;
+		return true;
+	}
 	
 	
 	/**
@@ -99,7 +108,12 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 		
 	}
 	
-
+	/**
+	 * Generate the action on a MULTIVAR translation
+	 * 
+	 * @param s
+	 * @return
+	 */
 	private String generateMultivarAction(State s) {
 		if(rootSM.getInstances() == null)
 			return s.getName() + Strings.B_BEQ + Strings.B_TRUE;
@@ -108,7 +122,11 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 					Utils.asSet(rootSM.getSelfName());
 	}
 
-
+	/**
+	 * Generate the action on a SINGLEVAR translation
+	 * @param s
+	 * @return
+	 */
 	private String generateSinglevarAction(State s) {
 		if(rootSM.getInstances() == null)
 			return Utils.getStatemachine(s).getName() + Strings.B_BEQ + s.getName();
