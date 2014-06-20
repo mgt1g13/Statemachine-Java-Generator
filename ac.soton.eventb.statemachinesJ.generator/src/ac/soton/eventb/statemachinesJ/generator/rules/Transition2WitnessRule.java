@@ -20,6 +20,7 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
  * @author matheus
  *
  */
+
 public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	
 	//TODO Check what happens if there is already a witness with the generated name
@@ -54,7 +55,7 @@ public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	}
 	
 	/**
-	 * Generate the witneses for a given event from a transition which elaborates it.
+	 * Generate the witnesses for a given event from a transition which elaborates it.
 	 * @param t
 	 * @param event
 	 * @return

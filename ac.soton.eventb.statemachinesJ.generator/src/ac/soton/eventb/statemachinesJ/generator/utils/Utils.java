@@ -186,6 +186,21 @@ public class Utils {
 		return false;
 	}
 	
+	
+	public static boolean containsEventSource(Statemachine s, Event e){
+		for(AbstractNode abs : s.getNodes()){
+			if(abs instanceof State){
+				for(Transition t : ((State)abs).getOutgoing() )
+					if(elaboratesEventFwd(t, e)) return true;
+				for(Statemachine is : ((State)abs).getStatemachines())
+					if(containsEventSource(is, e)) return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	
 	public static boolean elaboratesEvent(Transition t, Event ev){
 		for(Event iev : t.getElaborates()){
 			if(iev.equals(ev)) return true;
@@ -358,6 +373,21 @@ public class Utils {
 	 */
 	public static boolean isSelfLoop(Transition t){
 		return t.getSource().equals(t.getTarget());
+	}
+	
+	/**
+	 * Returns true if transition is local to source state i.e.
+	 * source state is state and target state is its substate.
+	 * @param t
+	 * @return
+	 */
+	public static boolean isLocalToSource(Transition t){
+		if(t.getSource() instanceof State)
+			for(Statemachine sm : ( (State)t.getSource()).getStatemachines() )
+				if(contains(sm, t.getTarget()))
+					return true;
+		
+		return false;
 	}
 	
 	
