@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eventb.emf.core.EventBElement;
+import org.eventb.emf.core.machine.Action;
 import org.eventb.emf.core.machine.Event;
-import org.eventb.emf.core.machine.Witness;
 
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
@@ -14,13 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Transition;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 
-
-/**
- * Works for both kinds of translations
- * @author matheus
- *
- */
-public class Transition2WitnessRule extends AbstractRule  implements IRule {
+public class TransitionAction2ActionRule extends AbstractRule  implements IRule {
 	
 	//TODO Check what happens if there is already a witness with the generated name
 	@Override
@@ -30,55 +24,59 @@ public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	}
 
 	/**
-	 * Trasition2Witness
+	 * TrasitionAction2Action
 	 * 
-	 * Generates the witness for events elaborated by the transition
+	 * Generates actions from transition actions
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 	
 		Transition sourceTransition = (Transition) sourceElement;
+		List<Action> generatedActions = generateActions(sourceTransition);
+		
 		
 		for(Event ev : sourceTransition.getElaborates()){
 			if(!ev.getName().equals(Strings.INIT)){
-				List<Witness> generatedWitness = generateWitness(sourceTransition, ev);
-				for(Witness w : generatedWitness){
-					ret.add(Make.descriptor(ev, witnesses, w, 10));
+				for(Action a : generatedActions){
+					ret.add(Make.descriptor(ev, actions, a, 10));
 				}				
 				
 			}
 		}
 			
 		return ret;		
-	}
-	
+	} 
+
+
+
 	/**
-	 * Generate the witneses for a given event from a transition which elaborates it.
-	 * @param t
-	 * @param event
+	 * Calculate the actions from a given Transition
+	 * @param sourceTransition
 	 * @return
 	 */
-	private List<Witness> generateWitness(Transition t, Event event){
-		List<Witness> ret = new ArrayList<Witness>();		
-		for(Witness w : t.getWitnesses()){
-			ret.add(transitionWitness2witness(w));
-		}		
+	private List<Action> generateActions(Transition sourceTransition){
+		List<Action> ret = new ArrayList<Action>();
+		
+		for(Action a : sourceTransition.getActions()){
+			ret.add(transitionAction2Action(a));
+		}	
 		return ret;
 	}
 	
+	
+	
 	/**
-	 * Creates a witness from the Transition witness
-	 * TODO Check if there is any problem in return W
-	 * @param w
+	 * Generates an action from another action
+	 * TODO checkif there is no problem in returning a only
+	 * @param a
 	 * @return
 	 */
-	private Witness transitionWitness2witness(Witness w){
-//		Witness newW = (Witness) Make.witness(w.getName(), w.getPredicate());
-//		newW.setComment(w.getComment());
-//		return newW;
-		return w;
+	private Action transitionAction2Action(Action a){
+		//return (Action) Make.action(a.getName(),a.getAction(), a.getComment());
+		return a;
 	}
+	
 	
 	
 }

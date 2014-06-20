@@ -94,6 +94,11 @@
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2WitnessRule"
                source_class="Transition">
          </rule>
+         <rule
+               name="TransitionAction2Action"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionAction2ActionRule"
+               source_class="Transition">
+         </rule>
         </generator>
      </extension>
      
