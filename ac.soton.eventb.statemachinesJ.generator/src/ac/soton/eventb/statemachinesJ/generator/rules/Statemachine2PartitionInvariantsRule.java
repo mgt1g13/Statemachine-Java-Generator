@@ -20,6 +20,18 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class Statemachine2PartitionInvariantsRule extends AbstractRule  implements IRule {
 
+	@Override
+	public boolean enabled(EventBElement sourceElement) throws Exception{
+		int numberOfStates = 0;
+		Statemachine sourceSm = (Statemachine) sourceElement;
+		for(AbstractNode abs : sourceSm.getNodes()){
+			if(abs instanceof State)
+				numberOfStates++;
+		}
+		
+		return sourceSm.getRefines() == null && numberOfStates > 1;
+	}
+	
 
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
@@ -39,19 +51,11 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		Statemachine sourceSm = (Statemachine) sourceElement;
 		
-		int numberOfStates = 0;
-		
-		for(AbstractNode abs : sourceSm.getNodes()){
-			if(abs instanceof State)
-				numberOfStates++;
-		}
 		
 		if(Utils.isRootStatemachine(sourceSm)){
-			if(sourceSm.getRefines() == null && numberOfStates > 1)
 				ret.add(Make.descriptor(container, invariants, partitionInv4RootSM(sourceSm), 5));
 		}
 		else{
-			if(sourceSm.getRefines() == null && numberOfStates > 1)
 				ret.add(Make.descriptor(container, invariants, partitionInv4NestedSM(sourceSm), 5));
 		}
 		return ret;
