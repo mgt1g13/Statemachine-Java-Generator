@@ -18,13 +18,18 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class State2TypingInvariantsRule extends AbstractRule  implements IRule  {
 
+	@Override
+	public boolean enabled(EventBElement sourceElement) throws Exception{
+		State sourceState = (State) sourceElement;
+		return (sourceState.getRefines() == null); //If it is not a state from the root statemachine
+	}
+	
 	
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		return true;
 	
 	}
-
 	
 	/**
 	 * Generates a new variable named as the states it represents
@@ -33,7 +38,6 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		State sourceState = (State) sourceElement;
-		if(sourceState.getRefines() != null) return ret; //Does nothing if it does not refine anything
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceState);
 	
 		Invariant newInvariant = Make.invariant(Strings.TYPEOF_ + sourceState.getName(), generatePredicate(sourceState), "");
