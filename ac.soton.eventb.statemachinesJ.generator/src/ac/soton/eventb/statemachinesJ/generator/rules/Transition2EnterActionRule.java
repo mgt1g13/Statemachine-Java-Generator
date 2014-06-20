@@ -30,9 +30,7 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
-		Transition sourceTransition = (Transition) sourceElement;
-		if(sourceTransition.getSource().equals(sourceTransition.getTarget())) return false;
-		return true;
+		return !Utils.isSelfLoop((Transition)sourceElement);
 	}
 	
 	

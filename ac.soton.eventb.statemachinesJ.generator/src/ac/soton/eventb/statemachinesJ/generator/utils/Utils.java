@@ -346,9 +346,18 @@ public class Utils {
 		
 		if(event.isExtended() && containsAction(event.getRefines().get(0), label))
 			return true;
-			
-		
 		return false;
+	}
+	
+	
+	/**
+	 *  Returns true if transition is local to source state i.e.
+	 *  source state is abstract state and target state is its substate.
+	 * @param t
+	 * @return
+	 */
+	public static boolean isSelfLoop(Transition t){
+		return t.getSource().equals(t.getTarget());
 	}
 	
 	
