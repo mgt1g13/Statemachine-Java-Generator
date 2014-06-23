@@ -159,30 +159,41 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		List<AbstractNode> target = Utils.getSuperStates(s);
 		target.removeAll(Utils.getSuperStates(t.getTarget()));
 		
+		if(t.getLabel().equals("toN")){
+			System.out.println(t.getLabel());
+			for(AbstractNode abs : target)
+				System.out.println(((State) abs).getName());
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			
+		}
+
 		for(AbstractNode node : target){
 			if(node instanceof State)
-				ret.addAll(vars_superState2leaveActions((State)node, e));
+				ret.addAll(vars_superState2leaveActions((State)node, e, t));
 		}
 		
 		for(Statemachine sm : s.getStatemachines()){
 			if(!(Utils.isLocalToSource(t) && !Utils.contains(sm, t.getTarget())))
-				ret.addAll(vars_statemachine2leaveActions(sm, e));	
+				ret.addAll(vars_statemachine2leaveActions(sm, e, t));	
 		}	
 		return ret;
 	}
 
 	/**
-	 * Create leave actios for statemachines
+	 * Create leave actions for statemachines
 	 * @param sm
 	 * @param e
 	 * @return
 	 */
-	private List<Action> vars_statemachine2leaveActions(Statemachine sm, Event e) {
+	private List<Action> vars_statemachine2leaveActions(Statemachine sm, Event e, Transition t) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		for(AbstractNode abs : sm.getNodes())
-			if(abs instanceof State)
-				ret.addAll(vars_state2leaveActions((State)abs, e));
+			if(abs instanceof State && !(t.getTarget().equals(abs)))
+				ret.addAll(vars_state2leaveActions((State)abs, e, t));
 		return ret;
 	}
 
@@ -192,14 +203,14 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private List<Action> vars_state2leaveActions(State s, Event e) {
+	private List<Action> vars_state2leaveActions(State s, Event e, Transition t) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		if(canGenerateLeaveEvent(s, e))
 			ret.add(vars_state2leaveAction(s, e));
 		
 		for(Statemachine sm : s.getStatemachines()){
-			ret.addAll(vars_statemachine2leaveActions(sm, e));
+			ret.addAll(vars_statemachine2leaveActions(sm, e, t));
 			
 			
 		}
@@ -228,7 +239,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	}
 
 
-	private List<Action> vars_superState2leaveActions(State node, Event e) {
+	private List<Action> vars_superState2leaveActions(State node, Event e, Transition t) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		if(canGenerateLeaveEvent(node, e))
@@ -236,7 +247,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		
 		for(Statemachine s : node.getStatemachines()){
 			if(!Utils.containsEventSource(s,e))
-				ret.addAll(vars_statemachine2leaveActions(s, e));
+				ret.addAll(vars_statemachine2leaveActions(s, e, t));
 			
 		}
 		return ret;

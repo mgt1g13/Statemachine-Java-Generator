@@ -206,7 +206,13 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 
 	}
 
-
+	/**
+	 * Returns a predicate string representing the guard for the transition source state
+	 * for enumeration translation this is either statemachine = state or statemachine(self) = state depending on lifting
+	 * for variables translation this is either state = TRUE of self : state depending on lifting
+	 * @param s
+	 * @return
+	 */
 	private String getSourceStatePredicate(State s) {
 		if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR))
 			return getSourceStatePredicateForSinglevar(s);
@@ -216,6 +222,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 			return Strings.TRANSLATION_KIND_NOT_SUPPORTED_ERROR;
 	}
 
+	
 	private String getSourceStatePredicateForSinglevar(State s) {
 		if(rootSM.getInstances() == null)
 			return Utils.getStatemachine(s).getName() + Strings.B_EQ + s.getName();

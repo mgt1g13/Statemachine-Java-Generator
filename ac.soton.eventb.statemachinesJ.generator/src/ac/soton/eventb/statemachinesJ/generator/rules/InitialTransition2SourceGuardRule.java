@@ -122,7 +122,7 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 	
 	/**
 	 * Generates the predicate for the variables translation
-	 * FIXME What exactly should it generate? Isn't it to state that, an transition
+	 * FIXME What exactly should it generate? Isn't it to state that, a transition
 	 * from an initial node should only be enabled when the container statemachine is active??
 	 * @param sourceTransition
 	 * @return
