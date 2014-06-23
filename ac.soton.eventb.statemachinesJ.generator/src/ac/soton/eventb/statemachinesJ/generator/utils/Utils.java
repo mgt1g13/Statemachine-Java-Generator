@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eventb.emf.core.machine.Action;
 import org.eventb.emf.core.machine.Event;
+import org.eventb.emf.core.machine.Guard;
 import org.eventb.emf.core.machine.Parameter;
 
 import ac.soton.eventb.statemachines.AbstractNode;
@@ -104,6 +105,22 @@ public class Utils {
 				return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns a sequence of names of the states in a statemachine, each name in curly braces to form a singleton set
+	 * @param sm
+	 * @return
+	 */
+	public static List<String> getStateNamesAsSingletons(Statemachine sm){
+		List<String> ret = new ArrayList<String>();
+		
+		for(AbstractNode abs : sm.getNodes()){
+			if(abs instanceof State)
+				ret.add(asSet(((State) abs).getName()));
+		}
+			
+		return ret;
 	}
 	
 	/**
@@ -327,6 +344,43 @@ public class Utils {
 		return false;
 	}
 	
+	
+	
+	/**
+	 * * Returns true if event and its extensions contain an guard of specified label prefix.
+	 * @param e
+	 * @param labelPrefix
+	 * @return
+	 */
+	public static boolean containsGuardWithPrefix(Event e, String labelPrefix){
+		for(Guard grd : e.getGuards()){
+			if(grd.getName().startsWith(labelPrefix))
+				return true;
+		}
+		
+		return e.isExtended() &&
+				containsGuardWithPrefix(e.getRefines().get(0), labelPrefix);
+		
+		
+	}
+	
+	/**
+	 * Returns true if event and its extensions contain an guard of specified label suffix.
+	 * @param e
+	 * @param labelPrefix
+	 * @return
+	 */
+	public static boolean containsGuardWithSuffix(Event e, String labelPrefix){
+		for(Guard grd : e.getGuards()){
+			if(grd.getName().endsWith(labelPrefix))
+				return true;
+		}
+		
+		return e.isExtended() &&
+				containsGuardWithSuffix(e.getRefines().get(0), labelPrefix);
+		
+		
+	}
 	
 	
 	public static List<AbstractNode> getAllTrueSources(Transition t){

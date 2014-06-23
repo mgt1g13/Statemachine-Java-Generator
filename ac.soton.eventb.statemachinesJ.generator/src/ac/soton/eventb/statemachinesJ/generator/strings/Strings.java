@@ -72,6 +72,9 @@ public class Strings {
 
 	// context name
 	public static String _IMPLICIT_CONTEXT   = "_implicitContext";
+	
+	// errors
+	public static String TRANSLATION_KIND_NOT_SUPPORTED_ERROR = "<Statemachine translation error: unknown translation kind>";
 
 	
 }
