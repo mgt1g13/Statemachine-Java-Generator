@@ -68,6 +68,7 @@ public class Strings {
 	public static String ISNOTIN_   = "isnotin_";
 	public static String ENTER_   = "enter_";
 	public static String LEAVE_   = "leave_";
+	public static String _TYPE   = "_type";
 
 	// context name
 	public static String _IMPLICIT_CONTEXT   = "_implicitContext";

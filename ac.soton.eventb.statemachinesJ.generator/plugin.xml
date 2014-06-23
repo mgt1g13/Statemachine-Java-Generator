@@ -113,7 +113,12 @@
                name="TransitionGuard2Guard"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionGuard2GuardRule"
                source_class="Transition">
-         </rule>         
+         </rule>
+         <rule
+               name="TransitioParameterd2Guard"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionParameter2GuardRule"
+               source_class="Transition">
+         </rule>                  
         </generator>
      </extension>
      
