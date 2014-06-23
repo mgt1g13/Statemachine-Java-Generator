@@ -59,7 +59,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 
 		for(Guard grd : generatedGuards){
 			for(Event e : sourceTransition.getElaborates()){
-				if(!e.getName().equals(Strings.INIT)){
+				if(!e.getName().equals(Strings.INIT) && grd.getName() != null){
 					System.out.println("Name = " + grd.getName());
 					System.out.println("Predicate = " + grd.getPredicate());
 					ret.add(Make.descriptor(e, guards, grd, 10));
@@ -97,7 +97,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 	 */
 	private Guard junction2disjunctiveSourceGuard(Transition sourceTransition) {
 		String name = "";
-		String pred = null;
+		String pred = "";
 		List<Guard> generatedGuards = new ArrayList<Guard>();
 
 		for(Transition t : sourceTransition.getSource().getIncoming()){
@@ -124,7 +124,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 			}
 		}
 
-		return null;
+		return (Guard) Make.guard(name, addTransitionGuards(sourceTransition, Utils.parenthesize(pred)));
 	}
 
 
@@ -196,7 +196,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 			for(Guard grd : t.getGuards())
 				p = p + Strings.B_AND + grd.getPredicate();
 
-		return null; 
+		return p; 
 	}
 
 
