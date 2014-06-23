@@ -11,7 +11,6 @@ import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
-import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Fork;
 import ac.soton.eventb.statemachines.Junction;
 import ac.soton.eventb.statemachines.State;
@@ -56,10 +55,6 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		Transition sourceTransition = (Transition) sourceElement;
 		rootSM = Utils.getRootStatemachine(sourceTransition.getSource());
 		
-		AbstractNode abs = sourceTransition.getSource();
-//		if(abs instanceof State)
-//			System.out.println(sourceTransition.getLabel() + " COMES FROM " + ((State) abs).getName());
-
 		List<Guard> generatedGuards = generateGuards(sourceTransition);
 
 		for(Guard grd : generatedGuards){
