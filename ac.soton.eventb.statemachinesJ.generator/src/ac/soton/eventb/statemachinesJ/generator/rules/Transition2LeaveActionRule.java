@@ -158,17 +158,6 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		List<Action> ret = new ArrayList<Action>();
 		List<AbstractNode> target = Utils.getSuperStates(s);
 		target.removeAll(Utils.getSuperStates(t.getTarget()));
-		
-		if(t.getLabel().equals("toN")){
-			System.out.println(t.getLabel());
-			for(AbstractNode abs : target)
-				System.out.println(((State) abs).getName());
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			
-		}
 
 		for(AbstractNode node : target){
 			if(node instanceof State)
@@ -177,7 +166,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		
 		for(Statemachine sm : s.getStatemachines()){
 			if(!(Utils.isLocalToSource(t) && !Utils.contains(sm, t.getTarget())))
-				ret.addAll(vars_statemachine2leaveActions(sm, e, t));	
+				ret.addAll(vars_statemachine2leaveActions(sm, e));	
 		}	
 		return ret;
 	}
@@ -188,12 +177,12 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private List<Action> vars_statemachine2leaveActions(Statemachine sm, Event e, Transition t) {
+	private List<Action> vars_statemachine2leaveActions(Statemachine sm, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		for(AbstractNode abs : sm.getNodes())
-			if(abs instanceof State && !(t.getTarget().equals(abs)))
-				ret.addAll(vars_state2leaveActions((State)abs, e, t));
+			if(abs instanceof State)
+				ret.addAll(vars_state2leaveActions((State)abs, e));
 		return ret;
 	}
 
@@ -203,16 +192,14 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private List<Action> vars_state2leaveActions(State s, Event e, Transition t) {
+	private List<Action> vars_state2leaveActions(State s, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		if(canGenerateLeaveEvent(s, e))
 			ret.add(vars_state2leaveAction(s, e));
 		
 		for(Statemachine sm : s.getStatemachines()){
-			ret.addAll(vars_statemachine2leaveActions(sm, e, t));
-			
-			
+			ret.addAll(vars_statemachine2leaveActions(sm, e));
 		}
 		
 		return ret;
@@ -247,7 +234,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		
 		for(Statemachine s : node.getStatemachines()){
 			if(!Utils.containsEventSource(s,e))
-				ret.addAll(vars_statemachine2leaveActions(s, e, t));
+				ret.addAll(vars_statemachine2leaveActions(s, e));
 			
 		}
 		return ret;
@@ -255,12 +242,13 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 
 	/**
 	 * Checks if a certain action to be generated already exists on a given event
+	 * XXX needs checking
 	 * @param s
 	 * @param e
 	 * @return
 	 */
 	private boolean canGenerateLeaveEvent(State s, Event e){
-		return //!Utils.containsAction(e, Strings.ENTER_ + s.getName()) 
+		return !Utils.containsAction(e, Strings.ENTER_ + s.getName()) &&
 				//&& !Utils.containsAction(e, Strings.LEAVE_ + s.getName()) 
 				/*&&*/ (generatedElements.get(e) == null || !generatedElements.get(e).contains(Strings.LEAVE_ + s.getName()));
 	}
