@@ -109,6 +109,11 @@
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2LeaveActionRule"
                source_class="Transition">
          </rule>
+          <rule
+               name="TransitionGuard2Guard"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionGuard2GuardRule"
+               source_class="Transition">
+         </rule>         
         </generator>
      </extension>
      
