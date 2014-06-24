@@ -11,7 +11,9 @@ import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
+import ac.soton.eventb.statemachines.Any;
 import ac.soton.eventb.statemachines.Fork;
+import ac.soton.eventb.statemachines.Initial;
 import ac.soton.eventb.statemachines.Junction;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
@@ -80,12 +82,23 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		else if(sourceTransition.getSource() instanceof Junction){
 			ret.add(junction2disjunctiveSourceGuard(sourceTransition));
 		}
-
+		else if(rootSM.getInstances() != null && 
+				(sourceTransition.getSource() instanceof Any || sourceTransition.getSource() instanceof Initial ))
+			ret.add(LiftedAnyOrInitial2SourceGuard(sourceTransition));
 
 
 		return ret;
 	}
 
+	/**
+	 * Generates source guards on lifted Statemachines for Initial and Any Nodes
+	 * @param sourceTransition
+	 * @return
+	 */
+	private Guard LiftedAnyOrInitial2SourceGuard(Transition sourceTransition) {
+		return (Guard) Make.guard(Strings.ISIN_ + rootSM.getInstances().getName(),
+				rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName());
+	}
 
 	/**
 	 * Generates a single disjunctive guard representing the condition for an outgoing transition from a junction to be enabled.

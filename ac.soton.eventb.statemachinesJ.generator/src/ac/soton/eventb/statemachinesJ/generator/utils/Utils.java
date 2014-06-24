@@ -344,6 +344,23 @@ public class Utils {
 		return false;
 	}
 	
+	/**
+	 * Returns true if event and its extensions contain an parameter of specified label. 
+	 * @param e
+	 * @param label
+	 * @return
+	 */
+	public static boolean containsParameterWithName(Event e, String label){
+		for(Parameter p : e.getParameters()){
+			if(p.getName().equals(label))
+				return true;
+		}
+		if(e.isExtended())
+			return containsParameterWithName(e.getRefines().get(0), label);
+		
+		
+		return false;
+	}
 	
 	
 	/**

@@ -12,18 +12,21 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
+import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements IRule {
 
+	private Statemachine rootSM;
+	
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		
 		return Utils.isSelfLoop((Transition) sourceElement) &&
-				((Transition) sourceElement).getSource() instanceof State &&
-				Utils.getRootStatemachine(((Transition) sourceElement).getSource()).getInstances() == null; 
+				((Transition) sourceElement).getSource() instanceof State; //&&
+				//Utils.getRootStatemachine(((Transition) sourceElement).getSource()).getInstances() == null; 
 	}
 	
 
@@ -44,9 +47,10 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		Transition sourceTransition = (Transition) sourceElement;
 		State sourceState = (State) sourceTransition.getSource();
+		rootSM = Utils.getRootStatemachine(sourceState);
 		
 		String name = Strings.ISIN_ + sourceState.getName();
-		String predicate = sourceState.getName() + Strings.B_EQ + Strings.B_TRUE;
+		String predicate = generatePredicate(sourceState);
 		
 		Guard grd = (Guard) Make.guard(name, predicate);
 		
@@ -59,5 +63,13 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 	
 		
 	}
-
+	
+	private String generatePredicate(State sourceState){
+		if(rootSM.getInstances() == null)
+			return sourceState.getName() + Strings.B_EQ + Strings.B_TRUE;
+		else
+			return rootSM.getSelfName() + Strings.B_IN +sourceState.getName(); //Assuming that the variable that refers to state
+																				//has the same name as the state
+			
+	}
 }

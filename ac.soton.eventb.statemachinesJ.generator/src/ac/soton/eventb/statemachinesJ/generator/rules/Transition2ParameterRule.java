@@ -69,7 +69,7 @@ public class Transition2ParameterRule extends AbstractRule  implements IRule {
 		List<Parameter> ret = new ArrayList<Parameter>();
 		Statemachine rootSm = Utils.getRootStatemachine(t.getTarget());
 		
-		if(rootSm.getInstances() != null && !Utils.containsGuardWithName(event, rootSm.getSelfName())){
+		if(rootSm.getInstances() != null){// && !Utils.containsParameterWithName(event, rootSm.getSelfName())){
 			ret.add(rootStatemachine2parameter(rootSm));
 		}
 		
