@@ -235,14 +235,14 @@ public class Utils {
 		if(t.getTarget() instanceof Junction){
 			Junction temp = (Junction) t.getTarget();
 			for(Transition it : temp.getOutgoing())
-				if(elaboratesEvent(it, event))
+				if(elaboratesEventFwd(it, event))
 					return true;
 		}
 		
 		if(t.getTarget() instanceof Fork){
 			Fork temp = (Fork) t.getTarget();
 			for(Transition it : temp.getOutgoing())
-				if(elaboratesEvent(it, event))
+				if(elaboratesEventFwd(it, event))
 					return true;
 		}
 		
@@ -257,16 +257,16 @@ public class Utils {
 		}
 		
 		if(t.getSource() instanceof Junction){
-			Junction temp = (Junction) t.getTarget();
+			Junction temp = (Junction) t.getSource();
 			for(Transition it : temp.getIncoming())
-				if(elaboratesEvent(it, event))
+				if(elaboratesEventBkw(it, event))
 					return true;
 		}
 		
 		if(t.getSource() instanceof Fork){
-			Fork temp = (Fork) t.getTarget();
+			Fork temp = (Fork) t.getSource();
 			for(Transition it : temp.getIncoming())
-				if(elaboratesEvent(it, event))
+				if(elaboratesEventBkw(it, event))
 					return true;
 		}
 		
