@@ -52,11 +52,13 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 		Statemachine sourceSm = (Statemachine) sourceElement;
 		
 		
+		int priority = 2;
+		
 		if(Utils.isRootStatemachine(sourceSm)){
-				ret.add(Make.descriptor(container, invariants, partitionInv4RootSM(sourceSm), 5));
+				ret.add(Make.descriptor(container, invariants, partitionInv4RootSM(sourceSm), priority));
 		}
 		else{
-				ret.add(Make.descriptor(container, invariants, partitionInv4NestedSM(sourceSm), 5));
+				ret.add(Make.descriptor(container, invariants, partitionInv4NestedSM(sourceSm), priority));
 		}
 		return ret;
 		
