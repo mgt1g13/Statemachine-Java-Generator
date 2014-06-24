@@ -1,5 +1,5 @@
 Statemachine-Java-Generator
 ===========================
 
-Reimplementation of the QVTo transform of the Statemachines plugin for the Rodin platform in Java
-<bold> TEST</bold>
+Reimplementation of the QVTo transform of the Statemachines plugin for the Rodin platform in Java.
+
