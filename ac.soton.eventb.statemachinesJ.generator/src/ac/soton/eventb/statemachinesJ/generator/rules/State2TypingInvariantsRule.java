@@ -17,11 +17,14 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class State2TypingInvariantsRule extends AbstractRule  implements IRule  {
-
+	
+	/**
+	 * Rule not to be applied on lifted statemachines
+	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		State sourceState = (State) sourceElement;
-		return (sourceState.getRefines() == null); //If it is not a state from the root statemachine
+		return (sourceState.getRefines() == null) && Utils.getRootStatemachine(sourceState).getInstances() == null; //If it is not a state from the root statemachine
 	}
 	
 	
@@ -42,10 +45,7 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	
 		Invariant newInvariant = Make.invariant(Strings.TYPEOF_ + sourceState.getName(), generatePredicate(sourceState), "");
 		
-		//TODO Attributes???
-
-		
-		
+		//TODO Attributes???	
 		ret.add(Make.descriptor(container, invariants, newInvariant, 1));
 		return ret;
 	}
@@ -57,13 +57,13 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	 */
 	private String generatePredicate (State sourceState){
 		 
-		if(Utils.getRootStatemachine(sourceState).getInstances() == null)
+		//if(Utils.getRootStatemachine(sourceState).getInstances() == null)
 			return sourceState.getName() + Strings.B_IN + Strings.B_BOOL;
-		else
-			if(Utils.isRootStatemachine(Utils.getStatemachine(sourceState)))
-				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getRootStatemachine(sourceState).getInstances().getName();
-			else
-				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getSuperState(Utils.getStatemachine(sourceState)).getName(); 
+//		else
+//			if(Utils.isRootStatemachine(Utils.getStatemachine(sourceState)))
+//				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getRootStatemachine(sourceState).getInstances().getName();
+//			else
+//				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getSuperState(Utils.getStatemachine(sourceState)).getName(); 
 		
 	}
 }

@@ -64,6 +64,11 @@
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2TypingInvariantsRule"
                source_class="State">
          </rule>
+         <rule
+               name="LiftedRootStatemachine2TypingInvariant"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.LiftedRootStatemachine2TypingInvariantRule"
+               source_class="Statemachine">
+         </rule>
 		 <rule
                name="Statemachine2PartitionInvariants"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Statemachine2PartitionInvariantsRule"
