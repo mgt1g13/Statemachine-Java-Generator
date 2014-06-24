@@ -52,14 +52,15 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 		
 		
 		if(sourceTransition.getTarget() instanceof State) {
-			 generatedActions.addAll(generateEnterActions(sourceTransition));
+			generatedActions.addAll(generateEnterActions(sourceTransition));
 			 
 		}
 		else
 			//Generate the actions for all outgoing transition from a fork
 			if(sourceTransition.getTarget() instanceof Fork){
-				for(Transition t : ((Fork)sourceTransition.getTarget()).getOutgoing())
+				for(Transition t : ((Fork)sourceTransition.getTarget()).getOutgoing()){
 					generatedActions.addAll(generateEnterActions(t));
+				}
 			
 			}
 		
@@ -67,8 +68,9 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 			if(!ev.getName().equals(Strings.INIT)){
 				for(Action a : generatedActions){
 					//if (!a.getName().equals("") && !Utils.containsAction(ev, a.getName()))
-					if (!a.getName().equals(""))
+					if (!a.getName().equals("")){
 						ret.add(Make.descriptor(ev, actions, a, 10));
+					}
 				}				
 				
 			}
@@ -88,6 +90,10 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 			if(abs instanceof State){
 				ret.add(state2enterAction( (State) abs ));
 			}
+			if(abs instanceof Fork){
+				for(Transition it : ((Fork)abs).getOutgoing())
+					ret.addAll(generateEnterActions(it));			
+				}
 		}
 		
 		return ret;
