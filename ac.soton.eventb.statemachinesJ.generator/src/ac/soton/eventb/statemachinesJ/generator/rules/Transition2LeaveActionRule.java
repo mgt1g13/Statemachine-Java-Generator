@@ -39,6 +39,13 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	
 	
 	/**
+	 * Should wait for the generation of enter actions
+	 */
+	@Override
+	public boolean fireLate(){
+		return true;
+	}
+	/**
 	 * Trasition2LeaveAction
 	 * 
 	 * Generates leave actions from a transition and add it to the events the transition elaborates

@@ -38,22 +38,22 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		Transition sourceTransition = (Transition) sourceElement;
 
-		int shouldNotGenerate = 0;
+		//int shouldNotGenerate = 0;
 
-		for(Event e : sourceTransition.getElaborates()){
-			if(Utils.containsGuardWithPrefix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
-					Utils.containsGuardWithSuffix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
-					e.getName().equals(Strings.INIT))
-				shouldNotGenerate++;
-
-		}
+//		for(Event e : sourceTransition.getElaborates()){
+//			if(Utils.containsGuardWithPrefix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
+//					Utils.containsGuardWithSuffix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
+//					e.getName().equals(Strings.INIT))
+//				shouldNotGenerate++;
+//
+//		}
 
 
 		return 
 				(sourceTransition.getSource() instanceof Initial) &&
 				Utils.isRootStatemachine(Utils.getStatemachine(sourceTransition.getSource())) &&
-				Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource())) &&
-				!(shouldNotGenerate == sourceTransition.getElaborates().size());
+				Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()));// &&
+//				!(shouldNotGenerate == sourceTransition.getElaborates().size());
 
 
 	}
@@ -77,11 +77,11 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 		Guard grd = (Guard) Make.guard(name, predicate);
 		
 		for(Event e : sourceTransition.getElaborates()){
-			if(!(Utils.containsGuardWithPrefix(e, name) ||
-					Utils.containsGuardWithSuffix(e, name)) ||
-					e.getName().equals(Strings.INIT))
-		
-			ret.add(Make.descriptor(e, guards, grd, 10));
+//			if(!(Utils.containsGuardWithPrefix(e, name) ||
+//					Utils.containsGuardWithSuffix(e, name)) ||
+//					e.getName().equals(Strings.INIT))
+			if(!e.getName().equals(Strings.INIT))
+				ret.add(Make.descriptor(e, guards, grd, 10));
 		}
 		
 		return ret;
@@ -122,8 +122,6 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 	
 	/**
 	 * Generates the predicate for the variables translation
-	 * FIXME What exactly should it generate? Isn't it to state that, a transition
-	 * from an initial node should only be enabled when the container statemachine is active??
 	 * @param sourceTransition
 	 * @return
 	 */
@@ -132,10 +130,7 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 			return Strings.B_TRUE + Strings.B_NOTIN +
 					Utils.parenthesize(Utils.toString(Utils.getStateNamesAsSingletons(Utils.getStatemachine(sourceTransition.getSource())),
 							Strings.B_UNION));
-			
-//			return Utils.getSuperState(Utils.getStatemachine(sourceTransition.getSource())).getName() +
-//					Strings.B_EQ + Strings.B_TRUE;
-//		
+
 		}
 		else
 			return rootSM.getSelfName() + Strings.B_NOTIN +
