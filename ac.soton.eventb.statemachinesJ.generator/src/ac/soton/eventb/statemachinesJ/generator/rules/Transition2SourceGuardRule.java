@@ -13,7 +13,6 @@ import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Any;
 import ac.soton.eventb.statemachines.Fork;
-import ac.soton.eventb.statemachines.Initial;
 import ac.soton.eventb.statemachines.Junction;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
@@ -82,9 +81,8 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		else if(sourceTransition.getSource() instanceof Junction){
 			ret.add(junction2disjunctiveSourceGuard(sourceTransition));
 		}
-		else if(rootSM.getInstances() != null && 
-				(sourceTransition.getSource() instanceof Any || sourceTransition.getSource() instanceof Initial ))
-			ret.add(LiftedAnyOrInitial2SourceGuard(sourceTransition));
+		else if(rootSM.getInstances() != null && sourceTransition.getSource() instanceof Any)
+			ret.add(LiftedAny2SourceGuard(sourceTransition));
 
 
 		return ret;
@@ -95,9 +93,19 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 	 * @param sourceTransition
 	 * @return
 	 */
-	private Guard LiftedAnyOrInitial2SourceGuard(Transition sourceTransition) {
-		return (Guard) Make.guard(Strings.ISIN_ + rootSM.getInstances().getName(),
-				rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName());
+	private Guard LiftedAny2SourceGuard(Transition sourceTransition) {
+		String predicate = "";
+		String name = "";
+		if(Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()))){
+			name = Strings.ISIN_ + "top_level_states";
+			predicate = rootSM.getSelfName() + Strings.B_IN +
+					Utils.parenthesize(Utils.toString(Utils.getStateNames(Utils.getStatemachine(sourceTransition.getSource())), Strings.B_UNION));
+		}
+		else{
+			name = Strings.ISIN_ + rootSM.getInstances().getName();
+			predicate = rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName();
+		}
+		return (Guard) Make.guard(name, predicate);
 	}
 
 	/**
