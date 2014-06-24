@@ -28,13 +28,7 @@ public class LiftedRootStatemachine2TypingInvariantRule extends AbstractRule  im
 		Statemachine sourceSM = (Statemachine) sourceElement;
 		return (Utils.isRootStatemachine(sourceSM)) && sourceSM.getInstances() != null; //If it is not a state from the root statemachine
 	}
-	
-	
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
+
 	
 	/**
 	 * Generates a new variable named as the states it represents
@@ -57,7 +51,11 @@ public class LiftedRootStatemachine2TypingInvariantRule extends AbstractRule  im
 	}
 	
 	
-	
+	/**
+	 * Generate all the invariants for a statemachine
+	 * @param sm
+	 * @return
+	 */
 	private List<Invariant> statemachine2typeInvariant(Statemachine sm) {
 		List<Invariant> ret = new ArrayList<Invariant>();
 		
@@ -73,7 +71,9 @@ public class LiftedRootStatemachine2TypingInvariantRule extends AbstractRule  im
 		List<Invariant> ret = new ArrayList<Invariant>();
 		
 		
-		
+		//XXX The order of these calls is important. This makes sure invariants
+		//are added in the right order. They must be generated in the inverse order
+		//of dependency to use positive priority and come before user's invariants.
 		for(Statemachine sm : s.getStatemachines())
 			ret.addAll(statemachine2typeInvariant(sm));
 		
