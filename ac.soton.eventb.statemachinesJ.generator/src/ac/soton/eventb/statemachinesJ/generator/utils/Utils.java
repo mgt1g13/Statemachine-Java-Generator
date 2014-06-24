@@ -256,14 +256,14 @@ public class Utils {
 			if(ev.equals(event)) return true;
 		}
 		
-		if(t.getTarget() instanceof Junction){
+		if(t.getSource() instanceof Junction){
 			Junction temp = (Junction) t.getTarget();
 			for(Transition it : temp.getIncoming())
 				if(elaboratesEvent(it, event))
 					return true;
 		}
 		
-		if(t.getTarget() instanceof Fork){
+		if(t.getSource() instanceof Fork){
 			Fork temp = (Fork) t.getTarget();
 			for(Transition it : temp.getIncoming())
 				if(elaboratesEvent(it, event))
