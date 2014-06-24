@@ -77,7 +77,9 @@ public class LiftedRootStatemachine2TypingInvariantRule extends AbstractRule  im
 		for(Statemachine sm : s.getStatemachines())
 			ret.addAll(statemachine2typeInvariant(sm));
 		
-		ret.add(generateInvariantFromState(s));
+		//Only generate refinements for non-refined states
+		if(s.getRefines() == null)
+			ret.add(generateInvariantFromState(s));
 		return ret;
 	}
 
