@@ -20,7 +20,10 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
-		return Utils.isSelfLoop((Transition) sourceElement) || ((Transition) sourceElement).getSource() instanceof State; 
+		
+		return Utils.isSelfLoop((Transition) sourceElement) &&
+				((Transition) sourceElement).getSource() instanceof State &&
+				Utils.getRootStatemachine(((Transition) sourceElement).getSource()).getInstances() == null; 
 	}
 	
 

@@ -14,6 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
+import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
@@ -22,7 +23,9 @@ public class State2SubstateInvariantRule extends AbstractRule  implements IRule 
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		State sourceState = (State) sourceElement;
-		return (!(sourceState.eContainer().eContainer() instanceof MachineImpl) && sourceState.getRefines() == null); //If it is not a state from the root statemachine
+		Statemachine rootSM = Utils.getRootStatemachine(sourceState);
+		return rootSM.getInstances() == null && //NON-LIFTED STATEMACHINE
+				(!(sourceState.eContainer().eContainer() instanceof MachineImpl) && sourceState.getRefines() == null); //If it is not a state from the root statemachine
 	}
 	
 	
