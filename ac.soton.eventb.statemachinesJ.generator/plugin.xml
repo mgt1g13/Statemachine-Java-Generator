@@ -128,7 +128,12 @@
                name="Transition2SourceGuard"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2SourceGuardRule"
                source_class="Transition">
-         </rule>            
+         </rule>
+         <rule
+               name="SelfLoopTransition2SourceGuard"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.SelfLoopTransition2SourceGuardRule"
+               source_class="Transition">
+         </rule>                
         </generator>
      </extension>
      
