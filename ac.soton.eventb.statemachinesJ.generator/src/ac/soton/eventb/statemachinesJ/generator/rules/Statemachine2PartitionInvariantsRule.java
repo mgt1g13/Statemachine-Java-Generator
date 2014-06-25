@@ -32,13 +32,6 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 		return sourceSm.getRefines() == null && numberOfStates > 1;
 	}
 	
-
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
-
 	
 	/**
 	 * States2PartitionInvariant
