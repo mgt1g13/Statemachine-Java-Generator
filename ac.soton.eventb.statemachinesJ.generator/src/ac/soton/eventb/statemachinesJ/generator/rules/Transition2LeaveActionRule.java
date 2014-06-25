@@ -140,7 +140,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	private List<Action> sourceState2leaveAction(State s, Transition t, Event e){
 		List<Action> ret = new ArrayList<Action>();
 		if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
-			return generateLeaveActionsForSinglevar(s, t, e);
+			//return generateLeaveActionsForSinglevar(s, t, e); Not Supported yet
 		}
 		
 		

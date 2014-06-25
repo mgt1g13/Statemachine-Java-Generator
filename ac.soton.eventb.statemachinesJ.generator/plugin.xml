@@ -138,7 +138,17 @@
                name="SelfLoopTransition2SourceGuard"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.SelfLoopTransition2SourceGuardRule"
                source_class="Transition">
-         </rule>                
+         </rule>
+         <rule
+               name="RootStatemachine2NewContext"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.RootStatemachine2NewContextRule"
+               source_class="Statemachine">
+         </rule> 
+		 <rule
+               name="Statemachine2Variables"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2VariablesRule"
+               source_class="Statemachine">
+         </rule>         
         </generator>
      </extension>
      
