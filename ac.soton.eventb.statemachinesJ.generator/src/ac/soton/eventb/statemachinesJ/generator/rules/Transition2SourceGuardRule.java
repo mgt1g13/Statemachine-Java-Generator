@@ -96,15 +96,35 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 	private Guard LiftedAny2SourceGuard(Transition sourceTransition) {
 		String predicate = "";
 		String name = "";
-		if(Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()))){
-			name = Strings.ISIN_ + "top_level_states";
-			predicate = rootSM.getSelfName() + Strings.B_IN +
-					Utils.parenthesize(Utils.toString(Utils.getStateNames(Utils.getStatemachine(sourceTransition.getSource())), Strings.B_UNION));
+		if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR)){
+			if(Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()))){
+				name = Strings.ISIN_ + "top_level_states";
+				predicate = rootSM.getSelfName() + Strings.B_IN +
+						Utils.parenthesize(Utils.toString(Utils.getStateNames(Utils.getStatemachine(sourceTransition.getSource())), Strings.B_UNION));
+			}
+			else{
+				name = Strings.ISIN_ + rootSM.getInstances().getName();
+				predicate = rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName();
+			}
+		}
+		else if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
+			if(Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()))){
+				name = Strings.ISIN_ + "top_level_statemachine";
+				predicate = rootSM.getName() + Utils.parenthesize(rootSM.getSelfName()) +
+						Strings.B_NEQ + rootSM.getName() + Strings._NULL;
+			}
+			else{
+				name = Strings.ISIN_ + rootSM.getInstances().getName();
+				predicate = rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName();
+			}
 		}
 		else{
-			name = Strings.ISIN_ + rootSM.getInstances().getName();
-			predicate = rootSM.getSelfName() + Strings.B_IN + rootSM.getInstances().getName();
+			name = "Error";
+			predicate = Strings.TRANSLATION_KIND_NOT_SUPPORTED_ERROR;
 		}
+			
+			
+			
 		return (Guard) Make.guard(name, predicate);
 	}
 
