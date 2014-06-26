@@ -153,7 +153,12 @@
                name="Enum_Statemachine2TypingInvariants"
                rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2TypingInvariantRule"
                source_class="Statemachine">
-         </rule>                  
+         </rule>    
+         <rule
+               name="Enum_Statemachine2SuperStateInvariant"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2SuperstateInvariantRule"
+               source_class="Statemachine">
+         </rule>                              
         </generator>
      </extension>
      

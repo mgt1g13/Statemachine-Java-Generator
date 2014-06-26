@@ -10,6 +10,7 @@ import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
+import ac.soton.eventb.emf.diagrams.generator.utils.Find;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.TranslationKind;
@@ -37,7 +38,7 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		
-		ret.add(Make.descriptor(null, components, Make.context(container.getName() + Strings._IMPLICIT_CONTEXT, ""),1));
+		ret.add(Make.descriptor(Find.project(container), components, Make.context(Strings.CTX_NAME(container), ""),1));
 		return ret;
 		
 		

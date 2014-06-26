@@ -1,5 +1,7 @@
 package ac.soton.eventb.statemachinesJ.generator.strings;
 
+import org.eventb.emf.core.EventBNamedCommentedComponentElement;
+
 
 public class Strings {
 	//private static final String BUNDLE_NAME = "ac.soton.eventb.classdiagrams.generator.strings.Strings"; //$NON-NLS-1$
@@ -75,6 +77,11 @@ public class Strings {
 	
 	// errors
 	public static String TRANSLATION_KIND_NOT_SUPPORTED_ERROR = "<Statemachine translation error: unknown translation kind>";
+	
+	//auxiliary methods
+	public static String CTX_NAME(EventBNamedCommentedComponentElement element){
+		return element.getName() + _IMPLICIT_CONTEXT;
+	}
 
 	
 }
