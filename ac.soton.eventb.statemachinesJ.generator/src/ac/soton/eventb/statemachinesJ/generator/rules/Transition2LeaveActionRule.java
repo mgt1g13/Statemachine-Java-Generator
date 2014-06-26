@@ -262,7 +262,13 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	}
 
 	
-	
+	/**
+	 * Generates leave actions for enumeration translation
+	 * @param s
+	 * @param t
+	 * @param e
+	 * @return
+	 */
 	private List<Action> generateLeaveActionsForSinglevar(State s, Transition t, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		List<AbstractNode> target = Utils.getSuperStates(s);
@@ -284,7 +290,12 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		return ret;
 	}
 
-
+	/**
+	 * Generates leave actions for a state using enumeration translation
+	 * @param s
+	 * @param e
+	 * @return
+	 */
 	private List<Action> enum_superState2leaveActions(State s, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		
@@ -295,7 +306,12 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		return ret;
 	}
 
-
+	/**
+	 * Generate leave actions for statemachines using enumeration translation
+	 * @param sm
+	 * @param e
+	 * @return
+	 */
 	private List<Action> enum_statemachine2leaveActions(Statemachine sm, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		if(canGenerateLeaveEvent(sm, e))
@@ -309,7 +325,12 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		return ret;
 	}
 
-
+	/**
+	 * Generates an action for a enumeration translation
+	 * @param sm
+	 * @param e
+	 * @return
+	 */
 	private Action enum_statemachine2leaveAction(Statemachine sm, Event e) {
 		String name = Strings.LEAVE_ + sm.getName();
 		String action = "";
