@@ -1,8 +1,6 @@
 package ac.soton.eventb.statemachinesJ.generator.enumRules;
 
-import java.awt.Container;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -15,6 +13,7 @@ import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.TranslationKind;
+import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class RootStatemachine2NewContextRule extends AbstractRule implements IRule{
@@ -28,15 +27,18 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 				
 	
 	}
-	
+	/**
+	 * Generates the implicit context
+	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
-		Statemachine rootSM = (Statemachine) sourceElement;
+	
+		
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		
-		
-		return Collections.emptyList();
+		ret.add(Make.descriptor(null, components, Make.context(container.getName() + Strings._IMPLICIT_CONTEXT, ""),1));
+		return ret;
 		
 		
 		
