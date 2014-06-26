@@ -276,12 +276,12 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		
 		for(AbstractNode node : target){
 			if(node instanceof State)
-				ret.addAll(enum_superState2leaveActions((State)node, e));
+				ret.addAll(enum_superState2leaveActions((State)node, t, e));
 		}
 		
 		for(Statemachine sm : s.getStatemachines()){
 			if(!(Utils.isLocalToSource(t) && !Utils.contains(sm, t.getTarget()))){
-				ret.addAll(enum_statemachine2leaveActions(sm, e));
+				ret.addAll(enum_statemachine2leaveActions(sm, t, e));
 			}
 		}
 		
@@ -296,11 +296,11 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private List<Action> enum_superState2leaveActions(State s, Event e) {
+	private List<Action> enum_superState2leaveActions(State s, Transition t, Event e) {
 		List<Action> ret = new ArrayList<Action>();
 		
 		for(Statemachine sm : s.getStatemachines()){
-			ret.addAll(enum_statemachine2leaveActions(sm, e));
+			ret.addAll(enum_statemachine2leaveActions(sm, t, e));
 		}
 			
 		return ret;
@@ -312,15 +312,15 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private List<Action> enum_statemachine2leaveActions(Statemachine sm, Event e) {
+	private List<Action> enum_statemachine2leaveActions(Statemachine sm, Transition t, Event e) {
 		List<Action> ret = new ArrayList<Action>();
-		if(canGenerateLeaveEvent(sm, e))
+		if(canGenerateLeaveEvent(sm, e) && !Utils.isLocalToSource(t))
 			ret.add(enum_statemachine2leaveAction(sm, e));
 		
 		for(AbstractNode node : sm.getNodes()){
 			if(node instanceof State)
 				for(Statemachine ism :((State) node).getStatemachines())
-					ret.addAll(enum_statemachine2leaveActions(ism, e));
+					ret.addAll(enum_statemachine2leaveActions(ism, t,e));
 		}
 		return ret;
 	}
