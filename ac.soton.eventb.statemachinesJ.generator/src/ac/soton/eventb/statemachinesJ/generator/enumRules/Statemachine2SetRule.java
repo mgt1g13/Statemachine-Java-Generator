@@ -1,11 +1,9 @@
 package ac.soton.eventb.statemachinesJ.generator.enumRules;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.gmf.runtime.diagram.ui.commands.ArrangeCommand;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 import org.eventb.emf.core.context.CarrierSet;
