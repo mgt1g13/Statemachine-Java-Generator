@@ -15,6 +15,7 @@ import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
+import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
@@ -24,6 +25,10 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		int numberOfStates = 0;
 		Statemachine sourceSm = (Statemachine) sourceElement;
+		//Only enabled for Variables Translation
+		if(!Utils.getRootStatemachine(sourceSm).getTranslation().equals(TranslationKind.MULTIVAR))
+			return false;
+		
 		for(AbstractNode abs : sourceSm.getNodes()){
 			if(abs instanceof State)
 				numberOfStates++;
