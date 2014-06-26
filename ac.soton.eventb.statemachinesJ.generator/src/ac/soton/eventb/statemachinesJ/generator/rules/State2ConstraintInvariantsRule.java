@@ -41,7 +41,7 @@ public class State2ConstraintInvariantsRule extends AbstractRule  implements IRu
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 
 		for(Invariant inv : sourceState.getInvariants()){
-			newInvariants.add(Make.invariant(inv.getName(),
+			newInvariants.add(Make.invariant(inv.getName(), inv.isTheorem(),
 					generatePredicate(sourceState, inv), ""));
 		}
 		
