@@ -61,8 +61,7 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 	/**
 	 * InitialTransition2SourceGuard
 	 * 
-	 * Transforms initial transition to guard that the statemachine is not active.
-	 * Generates guard for source state and particular event.
+	 * Transforms transition with a Initial as source to a guard for events it elaborates other than Init
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
