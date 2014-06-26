@@ -13,12 +13,16 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
+import ac.soton.eventb.statemachines.Statemachine;
+import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class State2ConstraintInvariantsRule extends AbstractRule  implements IRule {
 
 
+	private Statemachine rootSM;
+	
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		return true;
@@ -38,6 +42,8 @@ public class State2ConstraintInvariantsRule extends AbstractRule  implements IRu
 		List<Invariant> newInvariants = new ArrayList<Invariant>();
 
 		State sourceState = (State) sourceElement;
+		rootSM = Utils.getRootStatemachine(sourceState);
+		
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 
 		for(Invariant inv : sourceState.getInvariants()){
@@ -61,13 +67,50 @@ public class State2ConstraintInvariantsRule extends AbstractRule  implements IRu
 	 * @return
 	 */
 	private String generatePredicate(State s, Invariant inv){
-		if(Utils.getRootStatemachine(s).getInstances() == null)
+		if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR))
+			return generatePredicateForMultivar(s, inv);
+		else if (rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
+			return generatePredicateForSinglevar(s,inv);
+		}
+		else
+			return Strings.TRANSLATION_KIND_NOT_SUPPORTED_ERROR;
+			
+
+	}
+	/**
+	 * Generates the predicate for the Variables translation
+	 * @param s
+	 * @param inv
+	 * @return
+	 */
+	private String generatePredicateForMultivar (State s, Invariant inv){
+		if(rootSM.getInstances() == null)
 			return Utils.parenthesize(s.getName() + Strings.B_EQ + Strings.B_TRUE) + Strings.B_IMPL + Utils.parenthesize(inv.getPredicate());
 		else
-			return Strings.B_FORALL + Utils.getRootStatemachine(s).getSelfName() + Strings.B_MIDDOT +
-					Utils.parenthesize(Utils.getRootStatemachine(s).getSelfName() + Strings.B_IN + s.getName())+
-					Strings.B_IMPL + Utils.parenthesize(inv.getPredicate());	
+			return Strings.B_FORALL + rootSM.getSelfName() + Strings.B_MIDDOT +
+					Utils.parenthesize(rootSM.getSelfName() + Strings.B_IN + s.getName())+
+					Strings.B_IMPL + Utils.parenthesize(inv.getPredicate());
+		
 	}
+	
+	/**
+	 * Generate the predicates for the Enumeration Translation
+	 * @param s
+	 * @param inv
+	 * @return
+	 */
+	private String generatePredicateForSinglevar (State s, Invariant inv){
+		if(rootSM.getInstances() == null)
+			return Utils.parenthesize(Utils.getStatemachine(s).getName() + Strings.B_EQ + s.getName())+
+					Strings.B_IMPL + Utils.parenthesize(inv.getPredicate());
+		else{
+			return Strings.B_FORALL + rootSM.getSelfName() + Strings.B_MIDDOT+
+					Utils.parenthesize(Utils.getStatemachine(s).getName() +
+					Utils.parenthesize(rootSM.getSelfName()) + Strings.B_EQ + s.getName()) + Strings.B_IMPL +
+					Utils.parenthesize(inv.getPredicate());
+		}			
+	}
+
 
 
 }
