@@ -26,7 +26,8 @@ public class Statemachine2TypingAxiomRule extends AbstractRule implements IRule{
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+		return ((Statemachine)sourceElement).getRefines() == null &&
+				Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
 	}
 
 	/**
@@ -47,11 +48,24 @@ public class Statemachine2TypingAxiomRule extends AbstractRule implements IRule{
 		Statemachine sourceSM = (Statemachine) sourceElement;
 		Context ctx = (Context)Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container));
 		
-		Axiom newSet = (Axiom) Make.axiom(Strings.TYPEOF_ + sourceSM.getName() + Strings._NULL,
-				sourceSM.getName() + Strings._NULL + Strings.B_IN + sourceSM.getName() + Strings._STATES,
+		
+		String nullPartition = "";
+		if(Utils.hasParentState(sourceSM) || Utils.hasFinalState(sourceSM)){
+			nullPartition = Utils.asSet(sourceSM.getName() + Strings._NULL);
+		}
+		else
+			nullPartition = null;
+		
+		List<String> states = Utils.getStateNamesAsSingletons(sourceSM);
+		if(nullPartition != null) states.add(nullPartition);
+		
+		
+		Axiom newSet = (Axiom) Make.axiom(Strings.DISTINCT_STATES_IN_ + sourceSM.getName() + Strings._STATES,
+				Strings.B_PARTITION + Utils.parenthesize(sourceSM.getName() + Strings._STATES + Strings.B_COM +
+						Utils.toString(states, Strings.B_COM)),
 				"");
 		
-		ret.add(Make.descriptor(ctx, axioms, newSet, 1));
+		ret.add(Make.descriptor(ctx, axioms, newSet, 10));
 		return ret;
 	}
 	

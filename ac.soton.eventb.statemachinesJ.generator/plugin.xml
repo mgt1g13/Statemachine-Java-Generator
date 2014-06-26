@@ -183,7 +183,12 @@
                name="Enum_State2TypingAxiom"
                rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.State2TypingAxiomRule"
                source_class="State">
-         </rule>                                                          
+         </rule>
+		 <rule
+               name="Enum_Statemachine2ParitionAxiom"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2PartitionAxiomRule"
+               source_class="Statemachine">
+         </rule>                                                            
         </generator>
      </extension>
      

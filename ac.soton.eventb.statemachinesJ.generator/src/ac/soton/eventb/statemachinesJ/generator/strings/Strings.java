@@ -57,6 +57,7 @@ public class Strings {
 	public static String B_RANSUB   = " \u2A65 ";
 	public static String B_RANRES   = " \u25B7 ";
 	public static String B_CPROD   = " \u00D7 ";
+	public static String B_PARTITION = " partition";
 
 	// generated names & labels
 	public static String _STATES   = "_STATES";

@@ -92,6 +92,12 @@ public class Utils {
 		
 	}
 	
+	
+	public static boolean hasParentState(Statemachine sm){
+		return sm.eContainer() instanceof State;
+	}
+	
+	
 	/**
 	 * Returns true if statemachine has a final state.
 	 * @param sm
