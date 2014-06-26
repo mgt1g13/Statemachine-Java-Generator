@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eventb.emf.core.EventBElement;
+import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.machine.Action;
 import org.eventb.emf.core.machine.Event;
 
@@ -140,7 +141,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	private List<Action> sourceState2leaveAction(State s, Transition t, Event e){
 		List<Action> ret = new ArrayList<Action>();
 		if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
-			//return generateLeaveActionsForSinglevar(s, t, e); Not Supported yet
+			return generateLeaveActionsForSinglevar(s, t, e);
 		}
 		
 		
@@ -254,18 +255,69 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @param e
 	 * @return
 	 */
-	private boolean canGenerateLeaveEvent(State s, Event e){
+	private boolean canGenerateLeaveEvent(EventBNamed s, Event e){
 		return !Utils.containsAction(e, Strings.ENTER_ + s.getName()) &&
 				//&& !Utils.containsAction(e, Strings.LEAVE_ + s.getName()) 
 				/*&&*/ (generatedElements.get(e) == null || !generatedElements.get(e).contains(Strings.LEAVE_ + s.getName()));
 	}
 
+	
+	
 	private List<Action> generateLeaveActionsForSinglevar(State s, Transition t, Event e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Action> ret = new ArrayList<Action>();
+		List<AbstractNode> target = Utils.getSuperStates(s);
+		target.removeAll(Utils.getSuperStates(t.getTarget()));
+		
+		for(AbstractNode node : target){
+			if(node instanceof State)
+				ret.addAll(enum_superState2leaveActions((State)node, e));
+		}
+		
+		for(Statemachine sm : s.getStatemachines()){
+			if(!(Utils.isLocalToSource(t) && !Utils.contains(sm, t.getTarget()))){
+				ret.addAll(enum_statemachine2leaveActions(sm, e));
+			}
+		}
+		
+		if(Utils.hasExit(rootSM, t))
+			ret.add(enum_statemachine2leaveAction(rootSM, e));
+		return ret;
 	}
-	
-	
-	
-	
+
+
+	private List<Action> enum_superState2leaveActions(State s, Event e) {
+		List<Action> ret = new ArrayList<Action>();
+		
+		for(Statemachine sm : s.getStatemachines()){
+			ret.addAll(enum_statemachine2leaveActions(sm, e));
+		}
+			
+		return ret;
+	}
+
+
+	private List<Action> enum_statemachine2leaveActions(Statemachine sm, Event e) {
+		List<Action> ret = new ArrayList<Action>();
+		if(canGenerateLeaveEvent(sm, e))
+			ret.add(enum_statemachine2leaveAction(sm, e));
+		
+		for(AbstractNode node : sm.getNodes()){
+			if(node instanceof State)
+				for(Statemachine ism :((State) node).getStatemachines())
+					ret.addAll(enum_statemachine2leaveActions(ism, e));
+		}
+		return ret;
+	}
+
+
+	private Action enum_statemachine2leaveAction(Statemachine sm, Event e) {
+		String name = Strings.LEAVE_ + sm.getName();
+		String action = "";
+		if(rootSM.getInstances() == null)
+			action = sm.getName() + Strings.B_BEQ + sm.getName() + Strings._NULL;
+		else
+			action = sm.getName() + Utils.parenthesize(rootSM.getSelfName()) +
+			Strings.B_BEQ + sm.getName() + Strings._NULL;
+		return (Action) Make.action(name, action);
+	}
 }

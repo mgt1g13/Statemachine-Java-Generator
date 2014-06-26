@@ -470,6 +470,25 @@ public class Utils {
 	public static String parenthesize(String s){
 		return Strings.B_LPAR + s + Strings.B_RPAR;
 	}
+
+
+
+	/**
+	 * Returns true if statemachine contains a node amongst its states or substates.
+	 * @param sm
+	 * @param t
+	 * @return
+	 */
+	public static boolean hasExit(Statemachine sm, Transition t) {
+		if(t.getTarget() instanceof Final){
+			for(AbstractNode node : sm.getNodes())
+				if(node.equals(t.getTarget())) 
+					return true;
+			return false;
+		}
+		else return false; 
+				
+	}
 	
 	
 }
