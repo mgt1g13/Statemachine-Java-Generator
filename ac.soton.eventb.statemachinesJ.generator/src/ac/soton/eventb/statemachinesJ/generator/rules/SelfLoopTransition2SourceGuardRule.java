@@ -14,6 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
+import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
@@ -65,11 +66,38 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 	}
 	
 	private String generatePredicate(State sourceState){
+		if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR))
+			return generatePredicateForMultivar(sourceState);
+		else if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR))
+			return generatePredicateForSinglevar(sourceState);
+		else
+			return Strings.TRANSLATION_KIND_NOT_SUPPORTED_ERROR;
+			
+			
+	}
+	/**
+	 * Generates the predicate for Variables translation
+	 * @param sourceState
+	 */
+	private String generatePredicateForMultivar(State sourceState){
 		if(rootSM.getInstances() == null)
 			return sourceState.getName() + Strings.B_EQ + Strings.B_TRUE;
 		else
 			return rootSM.getSelfName() + Strings.B_IN +sourceState.getName(); //Assuming that the variable that refers to state
 																				//has the same name as the state
-			
 	}
+	
+	/**
+	 * Generates the predicate for Enumeration translation
+	 * @param sourceState
+	 */
+	private String generatePredicateForSinglevar(State sourceState){
+		if(rootSM.getInstances() == null)
+			return  Utils.getStatemachine(sourceState).getName() + Strings.B_EQ + sourceState.getName();
+		else
+			return Utils.getStatemachine(sourceState).getName() + Utils.parenthesize(rootSM.getSelfName())+
+					Strings.B_EQ + sourceState.getName();
+
+	}
+	
 }
