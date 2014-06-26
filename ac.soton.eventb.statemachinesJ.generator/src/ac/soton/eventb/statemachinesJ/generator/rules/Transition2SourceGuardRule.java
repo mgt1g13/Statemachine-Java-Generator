@@ -246,7 +246,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		if(rootSM.getInstances() == null)
 			return Utils.getStatemachine(s).getName() + Strings.B_EQ + s.getName();
 		else
-			return Utils.getStatemachine(s).getName() + Utils.parenthesize(rootSM.getName())+
+			return Utils.getStatemachine(s).getName() + Utils.parenthesize(rootSM.getSelfName())+
 					Strings.B_EQ + s.getName();
 	}
 
