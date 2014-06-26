@@ -25,7 +25,9 @@ public class Statemachine2TypingInvariantRule extends AbstractRule  implements I
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
 		TranslationKind translatioKind = Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation();
-		return translatioKind.equals(TranslationKind.SINGLEVAR);
+		Statemachine sourceSM = (Statemachine) sourceElement;
+		return translatioKind.equals(TranslationKind.SINGLEVAR) &&
+				sourceSM.getRefines() == null;
 	}
 	
 
