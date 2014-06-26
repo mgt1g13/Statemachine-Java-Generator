@@ -173,7 +173,17 @@
                name="Enum_State2Constant"
                rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.State2ConstantRule"
                source_class="State">
-         </rule>                                         
+         </rule>
+         <rule
+               name="Enum_Statemachine2TypingAxiom"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2TypingAxiomRule"
+               source_class="Statemachine">
+         </rule> 
+         <rule
+               name="Enum_State2TypingAxiom"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.State2TypingAxiomRule"
+               source_class="State">
+         </rule>                                                          
         </generator>
      </extension>
      
