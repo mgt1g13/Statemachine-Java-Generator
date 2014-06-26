@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
+import org.eventb.emf.core.context.Context;
 
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
@@ -37,8 +38,9 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 		
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
-		
-		ret.add(Make.descriptor(Find.project(container), components, Make.context(Strings.CTX_NAME(container), ""),1));
+		Context newCtx = (Context) Make.context(Strings.CTX_NAME(container), "");
+		ret.add(Make.descriptor(Find.project(container), components, newCtx ,1));
+		ret.add(Make.descriptor(container, sees, newCtx, 1));
 		return ret;
 		
 		

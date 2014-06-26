@@ -144,7 +144,7 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 		if(rootSM.getInstances() == null)
 			return Utils.getStatemachine(s).getName() + Strings.B_BEQ + s.getName();
 		else
-			return Utils.parenthesize(Utils.getStatemachine(s).getName() + rootSM.getSelfName())+
+			return Utils.getStatemachine(s).getName() + Utils.parenthesize(rootSM.getSelfName())+
 					Strings.B_BEQ + s.getName();
 
 	}
