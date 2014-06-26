@@ -13,6 +13,7 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
+import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
@@ -24,7 +25,9 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		State sourceState = (State) sourceElement;
-		return (sourceState.getRefines() == null) && Utils.getRootStatemachine(sourceState).getInstances() == null; //If it is not a state from the root statemachine
+		return Utils.getRootStatemachine(sourceState).getTranslation().equals(TranslationKind.MULTIVAR) &&
+				(sourceState.getRefines() == null) && 
+				Utils.getRootStatemachine(sourceState).getInstances() == null; //If it is not a state from the root statemachine
 	}
 	
 	

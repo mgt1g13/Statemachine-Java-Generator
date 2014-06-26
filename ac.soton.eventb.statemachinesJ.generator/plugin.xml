@@ -145,10 +145,15 @@
                source_class="Statemachine">
          </rule> 
 		 <rule
-               name="Statemachine2Variables"
+               name="Enum_Statemachine2Variables"
                rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2VariablesRule"
                source_class="Statemachine">
-         </rule>         
+         </rule>
+         <rule
+               name="Enum_Statemachine2TypingInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2TypingInvariantRule"
+               source_class="Statemachine">
+         </rule>                  
         </generator>
      </extension>
      
