@@ -18,6 +18,7 @@ import ac.soton.eventb.statemachines.Initial;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
+import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
@@ -25,10 +26,11 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 	private Map<State, Boolean> generatedStatus;
 	private Statemachine rootSm;
-
+	
 	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
+	public boolean enabled(EventBElement sourceElement) throws Exception{
+		return Utils.getRootStatemachine((Initial)sourceElement).getTranslation().equals(TranslationKind.MULTIVAR) &&
+				Utils.isRootStatemachine((Statemachine) sourceElement.eContainer());
 
 	}
 

@@ -188,7 +188,17 @@
                name="Enum_Statemachine2ParitionAxiom"
                rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2PartitionAxiomRule"
                source_class="Statemachine">
-         </rule>                                                            
+         </rule>
+		 <rule
+               name="Enum_Transition2InitActionsActive"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Transition2InitActionsActiveRule"
+               source_class="Transition">
+         </rule>
+		 <rule
+               name="Enum_Transition2InitActionsInactive"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Transition2InitActionsInactiveRule"
+               source_class="Transition">
+         </rule>                                                                                 
         </generator>
      </extension>
      
