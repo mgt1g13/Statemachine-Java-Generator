@@ -14,6 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
+import ac.soton.eventb.statemachines.Fork;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
@@ -101,8 +102,11 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 		List<Action> ret = new ArrayList<Action>();
 		List<AbstractNode> superStates = Utils.getSuperStates(sourceTransition.getTarget());
 		
-		ret.addAll(state2initActionsActive((State) sourceTransition.getTarget(), (State) sourceTransition.getTarget()));
-		
+		if(sourceTransition.getTarget() instanceof State)
+			ret.addAll(state2initActionsActive((State) sourceTransition.getTarget(), (State) sourceTransition.getTarget()));
+		else if(sourceTransition.getTarget() instanceof Fork)
+			for(Transition t : ((Fork)sourceTransition.getTarget()).getOutgoing())
+				ret.addAll(generateActionsActive(t));
 		for(AbstractNode node : superStates){
 			if(node instanceof State)
 				ret.addAll(superState2InitActionsActive((State) node));
