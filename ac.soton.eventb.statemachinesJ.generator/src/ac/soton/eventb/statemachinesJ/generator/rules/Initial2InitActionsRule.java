@@ -29,8 +29,15 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
-		return Utils.getRootStatemachine((Initial)sourceElement).getTranslation().equals(TranslationKind.MULTIVAR) &&
-				Utils.isRootStatemachine((Statemachine) sourceElement.eContainer());
+		Transition sourceTransition = (Transition) sourceElement;
+		if(!Utils.getRootStatemachine(sourceTransition.getTarget()).getTranslation().equals(TranslationKind.MULTIVAR))
+			return false;
+	
+		
+		for(Event e : sourceTransition.getElaborates())
+			if(e.getName().equals(Strings.INIT))
+				return true;
+		return false;
 
 	}
 
@@ -46,25 +53,19 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 
 
-		// Do nothing if it is not the initial node on a root statemachine
-		if(!Utils.isRootStatemachine((Statemachine) sourceElement.eContainer())){
-			return new ArrayList<GenerationDescriptor>(); 
-		}
-		else{
-			rootSm = (Statemachine) sourceElement.eContainer();
-		}
+		Transition sourceTransition = (Transition) (sourceElement);
+
+		rootSm = (Statemachine) Utils.getRootStatemachine(sourceTransition.getTarget());
 
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 
 		//Map that stores if the init action was generated or not
 		generatedStatus = new HashMap<State, Boolean>();
-		Initial sourceInitial = (Initial) (sourceElement);
+		
 
-		List<Object> temp = getInitElaboration(sourceInitial);
-
-		Transition initTransition = (Transition) temp.get(0);
-		Event initEvent = (Event) temp.get(1);
-		List<Action> generatedActions = generateActive(initTransition, initEvent);
+	  
+		Event initEvent = getInitEvent(sourceTransition);
+		List<Action> generatedActions = generateActive(sourceTransition, initEvent);
 		generatedActions.addAll(generateInactive(initEvent));
 
 		for(Action a : generatedActions){
@@ -78,22 +79,15 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 	/**
 	 * Get the initialisation event
-	 * @param sourceInitial
-	 * @return first element, the relevant transition. Second element, the Initialisation event
+	 * @param sourceTransition
+	 * @return the init event (should never return null)
 	 */
-	private List<Object> getInitElaboration(Initial sourceInitial){
-		List<Object> ret = new ArrayList<Object>();
-		for(Transition trans : sourceInitial.getOutgoing()){
-			for(Event ev : trans.getElaborates()){
-				if(ev.getName() == Strings.INIT);
-				ret.add(trans);
-				ret.add(ev);
-				break;
-			}
-			if(ret.size() == 0)
-				break;
+	private Event getInitEvent(Transition sourceTransition){
+		for(Event e : sourceTransition.getElaborates()){
+			if(e.getName().equals(Strings.INIT))
+				return e;
 		}
-		return ret;
+		return null;
 	}
 
 
