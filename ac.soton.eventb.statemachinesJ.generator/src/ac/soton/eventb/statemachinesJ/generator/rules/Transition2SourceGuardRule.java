@@ -232,9 +232,10 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		String p = predicate;
 
 		if((! (t.getTarget() instanceof State) ) && (!t.getGuards().isEmpty()))
-			for(Guard grd : t.getGuards())
+			for(Guard grd : t.getGuards()){
 				p = p + Strings.B_AND + grd.getPredicate();
-
+				p = Utils.parenthesize(p);
+			}
 		return p; 
 	}
 
