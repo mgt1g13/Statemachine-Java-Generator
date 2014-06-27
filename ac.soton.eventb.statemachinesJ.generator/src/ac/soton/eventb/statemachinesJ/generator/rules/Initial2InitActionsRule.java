@@ -129,7 +129,6 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 		
 		if(generatedStatus.get(s) == null){
 			ret.add(state2initAction(s, value));
-			System.out.println(s.getName());
 		}
 		for(Statemachine sm : s.getStatemachines()){
 			if(!Utils.contains(sm, target))

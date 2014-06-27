@@ -71,7 +71,6 @@ public class Transition2InitActionsInactiveRule extends AbstractRule  implements
 	private List<Action> statemachine2initActionsInactive(Statemachine sm) {
 		List<Action> ret = new ArrayList<Action>();
 		if(canGenerate(sm)){
-			System.out.println(sm.getName());
 			ret.add(statemachine2initActionInactive(sm));
 		}
 		for(AbstractNode node : sm.getNodes()){
