@@ -14,6 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
+import ac.soton.eventb.statemachines.Fork;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
@@ -142,8 +143,18 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	 */
 	private List<Action> generateActive(Transition init, Event event){
 		List<Action> ret = new ArrayList<Action>();
-		//Assuming only States can be be target by initialisation transition
-		State target = (State) init.getTarget();
+		State target; 
+		
+		if(init.getTarget() instanceof State)
+			target = (State) init.getTarget();
+		else if(init.getTarget() instanceof Fork){
+			for(Transition t : ((Fork)init.getTarget()).getOutgoing())
+				ret.addAll(generateActive(t, event));
+			return ret;
+		}
+		else
+			return ret;
+		
 		List<AbstractNode> superStates = Utils.getSuperStates(target);
 
 		for(AbstractNode abs : superStates){
@@ -191,8 +202,8 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 
 		for(Statemachine sm : s.getStatemachines()){
-			if(!Utils.containsEventTarget(sm, event));
-			ret.addAll(statemachine2initActionsActive(sm, event));
+			if(!Utils.containsEventTarget(sm, event))
+				ret.addAll(statemachine2initActionsActive(sm, event));
 
 		}
 
