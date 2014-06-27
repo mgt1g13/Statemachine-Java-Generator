@@ -54,19 +54,13 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 		
 		Transition sourceTransition = (Transition) (sourceElement);
-		
 		rootSm = (Statemachine) Utils.getRootStatemachine(sourceTransition.getTarget());
-
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 
 		//Map that stores if the init action was generated or not
 		generatedStatus = new HashMap<State, Boolean>();
-		
-
-	  
 		Event initEvent = getInitEvent(sourceTransition);
 		List<Action> generatedActions = generateActive(sourceTransition, initEvent);
-		//generatedActions.addAll(generateInactive(initEvent));
 
 		for(Action a : generatedActions){
 			ret.add(Make.descriptor(initEvent, actions, a, 10));
@@ -88,52 +82,6 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 				return e;
 		}
 		return null;
-	}
-
-
-	/**
-	 * Generate initialisations for all states to be initialised as inactive
-	 * @return
-	 */
-	private List<Action> generateInactive(Event event){
-		List<Action> ret = new ArrayList<Action>();
-		ret.addAll(statemachine2initActionsInactive(rootSm, event));		
-		return ret;
-	}
-
-	/**
-	 * Transforms statemachine to initialisation actions on inactive states.
-	 * @param sm
-	 * @param event
-	 * @return
-	 */
-	private List<Action> statemachine2initActionsInactive(Statemachine sm, Event event){
-		List<Action> ret = new ArrayList<Action>();
-		for(AbstractNode abs : sm.getNodes()){
-			if(abs instanceof State){
-				ret.addAll(state2initActionsInactive( (State)abs , event ));
-			}
-		}
-		return ret;
-	}
-
-	private List<Action> state2initActionsInactive(State s, Event event){
-		List<Action> ret = new ArrayList<Action>();
-		String value;
-
-		if(rootSm.getInstances() == null)
-			value = Strings.B_FALSE;
-		else
-			value = Strings.B_EMPTYSET;
-		if(generatedStatus.get(s) == null)
-			ret.add(state2initAction(s, value));
-
-		for(Statemachine sm : s.getStatemachines()){
-			ret.addAll(statemachine2initActionsInactive(sm, event));
-		}
-
-
-		return ret;
 	}
 
 
@@ -214,9 +162,6 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 		return ret;
 	}
-
-
-
 
 
 	private List<Action> statemachine2initActionsActive(Statemachine s, Event event){
