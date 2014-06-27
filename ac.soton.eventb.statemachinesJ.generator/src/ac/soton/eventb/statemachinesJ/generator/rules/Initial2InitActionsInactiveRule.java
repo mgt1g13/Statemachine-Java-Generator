@@ -22,7 +22,7 @@ import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
-public class Initial2InitActionsRule extends AbstractRule  implements IRule {
+public class Initial2InitActionsInactiveRule extends AbstractRule  implements IRule {
 
 	private Map<State, Boolean> generatedStatus;
 	private Statemachine rootSm;
@@ -42,6 +42,11 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	}
 
 
+	@Override
+	public boolean fireLate() {
+		return true;
+	}
+	
 	/**
 	 * Initial2InitActions
 	 * 
@@ -58,15 +63,14 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 		rootSm = (Statemachine) Utils.getRootStatemachine(sourceTransition.getTarget());
 
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
-
+		
 		//Map that stores if the init action was generated or not
 		generatedStatus = new HashMap<State, Boolean>();
 		
 
 	  
 		Event initEvent = getInitEvent(sourceTransition);
-		List<Action> generatedActions = generateActive(sourceTransition, initEvent);
-		//generatedActions.addAll(generateInactive(initEvent));
+		List<Action> generatedActions = (generateInactive(initEvent));
 
 		for(Action a : generatedActions){
 			ret.add(Make.descriptor(initEvent, actions, a, 10));
@@ -135,113 +139,7 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 		return ret;
 	}
-
-
-	/**
-	 * Generate initialisations for all states to be initialised as active
-	 * @return
-	 */
-	private List<Action> generateActive(Transition init, Event event){
-		List<Action> ret = new ArrayList<Action>();
-		State target; 
-		
-		if(init.getTarget() instanceof State)
-			target = (State) init.getTarget();
-		else if(init.getTarget() instanceof Fork){
-			for(Transition t : ((Fork)init.getTarget()).getOutgoing())
-				ret.addAll(generateActive(t, event));
-			return ret;
-		}
-		else
-			return ret;
-		
-		
-		
-		List<AbstractNode> superStates = Utils.getSuperStates(target);
-
-		for(AbstractNode abs : superStates){
-			if(abs instanceof State){
-				ret.addAll(superState2initActionsActive( (State) abs, event));
-			}
-		}
-		ret.addAll(state2initActionsActive(target,event, target));
-		return ret;
-	}
-
-	private List<Action> state2initActionsActive(State s, Event v, State target){
-		List<Action> ret = new ArrayList<Action>();
-		String value;
-		//if(Utils.getRootStatemachine(s).getInstances() == null)
-		if(rootSm.getInstances() == null)
-			value = Strings.B_TRUE;
-		else
-			//value = Utils.getRootStatemachine(s).getInstances().getName();
-			value = rootSm.getInstances().getName();
-		
-		
-		if(generatedStatus.get(s) == null){
-			ret.add(state2initAction(s, value));
-			System.out.println(s.getName());
-		}
-		for(Statemachine sm : s.getStatemachines()){
-			if(!Utils.contains(sm, target))
-				ret.addAll(statemachine2initActionsActive(sm,v));
-		}
-		return ret;
-
-	}
-
-
-
-	private List<Action> superState2initActionsActive(State s, Event event){
-		List<Action> ret = new ArrayList<Action>();
-		String value;
-//		if(Utils.getRootStatemachine(s).getInstances() == null)
-		if(rootSm.getInstances() == null)
-			value = Strings.B_TRUE;
-		else
-//			value = Utils.getRootStatemachine(s).getInstances().getName();
-			value = rootSm.getInstances().getName();
-		if(generatedStatus.get(s) == null)
-			ret.add(state2initAction(s, value));
-
-
-		for(Statemachine sm : s.getStatemachines()){
-			if(!Utils.containsEventTarget(sm, event))
-				ret.addAll(statemachine2initActionsActive(sm, event));
-
-		}
-
-		return ret;
-	}
-
-
-
-
-
-	private List<Action> statemachine2initActionsActive(Statemachine s, Event event){
-		List<Action> ret = new ArrayList<Action>();
-		State target = Utils.getStartingStateFromInitialisation(s);
-		if(target == null) return ret; //XXX REPEATED CODE
-		for(State is : Utils.getSuperstateTo(target, s)){
-			ret.addAll(state2initActionsActive(is, event, target));
-		}
-
-		ret.addAll(state2initActionsActive(target, event, target));
-		return ret;
-	}
-
-
-
-	/**
-	 * Transforms state to initialisation action.
-	 * Generates action for state and event.
-	 * Skips transformation if event is extended and contains same action already.
-	 * 
-	 * @param s
-	 * @param value
-	 * @return
-	 */
+	
 	private Action state2initAction(State s, String value){
 		//Do nothing if initialisation to the given state has already been done
 		//if(generatedStatus.get(s) != null) return null;

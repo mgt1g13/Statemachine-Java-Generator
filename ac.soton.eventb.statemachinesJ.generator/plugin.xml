@@ -89,6 +89,11 @@
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsRule"
                source_class="Transition">
          </rule>
+		<rule
+               name="Initial2InitActionsInactive"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsInactiveRule"
+               source_class="Transition">
+         </rule>
          <rule
                name="Transition2Parameter"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2ParameterRule"
