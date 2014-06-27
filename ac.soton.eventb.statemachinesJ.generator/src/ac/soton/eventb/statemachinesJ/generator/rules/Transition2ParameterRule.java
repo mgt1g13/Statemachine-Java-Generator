@@ -26,12 +26,6 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 public class Transition2ParameterRule extends AbstractRule  implements IRule {
 
 	//TODO Check what happens if there is already a parameters with the generated name
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
-
 	
 	/**
 	 * Trasition2Parameters

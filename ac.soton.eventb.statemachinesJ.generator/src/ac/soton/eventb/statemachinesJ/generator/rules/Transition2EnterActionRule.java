@@ -100,6 +100,11 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 		
 	}
 	
+	/**
+	 * Generates an enter action for the given state
+	 * @param s
+	 * @return
+	 */
 	private Action state2enterAction(State s){
 		String name = Strings.ENTER_ + s.getName();
 		

@@ -70,14 +70,10 @@ public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	
 	/**
 	 * Creates a witness from the Transition witness
-	 * TODO Check if there is any problem in return W
 	 * @param w
 	 * @return
 	 */
 	private Witness transitionWitness2witness(Witness w){
-//		Witness newW = (Witness) Make.witness(w.getName(), w.getPredicate());
-//		newW.setComment(w.getComment());
-//		return newW;
 		return w;
 	}
 	

@@ -61,10 +61,12 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 		return ret;
 		
 	}
-
-	/*
-	* Generate the partition invariant for Roots Statemachines
-	*/
+	
+	/**
+	 * Generate the partition invariant for Roots Statemachines
+	 * @param sm
+	 * @return
+	 */
 	private Invariant partitionInv4RootSM(Statemachine sm){
 		return Make.invariant(Strings.DISTINCT_STATES_IN_ + sm.getName(),
 				getStatePartitionAnticedent4RootSM(sm) + "partition" + getStatePartitionContent(sm), 
@@ -81,9 +83,12 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 				"");
 	}
 	
-	/*
+	/**
 	 * Returns an anticedent for the partition invariant for an unlifted nested statemachine
 	 * or empty string otherwise 
+	 * @param sm
+	 * @param parentState
+	 * @return
 	 */
 	private String getStatePartitionAnticedent4NestedSM(Statemachine sm, State parentState){
 		if(Utils.getRootStatemachine(sm).getInstances() == null)
@@ -94,9 +99,11 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 	
 	
 	
-	/*
+	/**
 	 * Returns an anticedent for the partition invariant for an unlifted root statemachine with final state.
 	 * or empty string otherwise
+	 * @param sm
+	 * @return
 	 */
 	private String getStatePartitionAnticedent4RootSM(Statemachine sm){
 		if(Utils.hasFinalState(sm) && Utils.getRootStatemachine(sm).getInstances() == null)
@@ -109,11 +116,13 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 		
 	}
 	
-	/*
-	* Returns the partition content (the bit in brackets and including the brackets)
-	* taking into account whether the statemachine is lifted or not and if not
-	* whether this is a root statemachine and if so does it have a final state
-	*/
+	/**
+	 * Returns the partition content (the bit in brackets and including the brackets)
+	 * taking into account whether the statemachine is lifted or not and if not
+	 * whether this is a root statemachine and if so does it have a final state
+	 * @param sm
+	 * @return
+	 */
 	private String getStatePartitionContent(Statemachine sm){
 		if(Utils.getRootStatemachine(sm).getInstances() == null)
 			return Utils.parenthesize(Utils.asSet(Strings.B_TRUE) + Strings.B_COM + Utils.toString(getStatesString4Partition(sm), Strings.B_COM)); 
@@ -128,9 +137,11 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 				return Utils.parenthesize(Utils.getSuperState(sm).getName() + Strings.B_COM + Utils.toString(Utils.getStateNames(sm), Strings.B_COM));
 	}
 	
-	/*
+	/**
 	 * Returns the part of the partition string constructed from the state variables of a statemachine.
 	 * ONLY FOR NON-LIFTED
+	 * @param sm
+	 * @return
 	 */
 	private List<String> getStatesString4Partition(Statemachine sm){
 		List<String> ret = new ArrayList<String>();
@@ -142,9 +153,11 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 	}
 	
 	
-	/*
+	/**
 	 * Returns a string for a single state variable suitable for the partition invariant.
 	 * ONLY FOR NON-LIFTED - this is an intersection of the singleton state with TRUE
+	 * @param s
+	 * @return
 	 */
 	private String getStatesString4Partition(State s){
 		return Utils.asSet(s.getName()) + Strings.B_INTER + Utils.asSet(Strings.B_TRUE);

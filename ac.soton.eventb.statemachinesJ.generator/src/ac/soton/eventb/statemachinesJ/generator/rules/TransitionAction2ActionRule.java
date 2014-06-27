@@ -68,12 +68,10 @@ public class TransitionAction2ActionRule extends AbstractRule  implements IRule 
 	
 	/**
 	 * Generates an action from another action
-	 * TODO checkif there is no problem in returning a only
 	 * @param a
 	 * @return
 	 */
 	private Action transitionAction2Action(Action a){
-		//return (Action) Make.action(a.getName(),a.getAction(), a.getComment());
 		return a;
 	}
 	
