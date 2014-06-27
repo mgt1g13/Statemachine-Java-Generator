@@ -309,6 +309,26 @@ public class Utils {
 	}
 	
 	/**
+	 * Returns starting state found in statemachine i.e. state that is linked by incoming transition from 'Initial' state.
+	 * and is target of a transition that elaborates Initialisation
+	 * @param sm
+	 * @return
+	 */
+	public static State getStartingStateFromInitialisation(Statemachine sm){
+		for(AbstractNode abs : sm.getNodes()){
+			if(abs instanceof Initial)
+				for(Transition t :  ((Initial) abs).getOutgoing())
+					for(Event e : t.getElaborates())
+						if(e.getName().equals(Strings.INIT))
+							return (State) t.getTarget();
+		}
+	
+		return null;
+	}
+	
+	
+	
+	/**
 	 * Returns all states that are superstates of input state up to container statemachine.
 	 * @param container
 	 * @return

@@ -216,7 +216,7 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 
 	private List<Action> statemachine2initActionsActive(Statemachine s, Event event){
 		List<Action> ret = new ArrayList<Action>();
-		State target = Utils.getStartingState(s);
+		State target = Utils.getStartingStateFromInitialisation(s);
 		if(target == null) return ret; //XXX REPEATED CODE
 		for(State is : Utils.getSuperstateTo(target, s)){
 			ret.addAll(state2initActionsActive(is, event, target));

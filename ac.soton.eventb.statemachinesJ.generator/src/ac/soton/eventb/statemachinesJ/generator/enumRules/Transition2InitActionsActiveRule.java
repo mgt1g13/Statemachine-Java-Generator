@@ -145,7 +145,7 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	 */
 	private List<Action> statemachine2initActionsActive(Statemachine sm) {
 		List<Action> ret = new ArrayList<Action>();
-		State target = Utils.getStartingState(sm);
+		State target = Utils.getStartingStateFromInitialisation(sm);
 		if(target == null) return ret;
 		for(State s : Utils.getSuperstateTo(target, sm))
 			ret.addAll(state2initActionsActive(s, target));
