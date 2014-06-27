@@ -19,8 +19,13 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class State2ConstraintInvariantsRule extends AbstractRule  implements IRule {
-
-
+	
+	
+	/**
+	 * Works for both translations
+	 * 
+	 */
+	
 	private Statemachine rootSM;
 	
 	@Override

@@ -33,7 +33,6 @@ public class State2SubstateInvariantRule extends AbstractRule  implements IRule 
 	
 	/**
 	 * States2SubstateInvariants
-	 * TODO CHECK LIFTED STATE MACHINES!!!
 	 * Generates a new substate invariant for a state.
 	 */
 	@Override

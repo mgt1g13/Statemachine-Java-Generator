@@ -21,13 +21,15 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements IRule {
 
 	private Statemachine rootSM;
-	
+	/**
+	 * Works for both translations
+	 * 
+	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		
 		return Utils.isSelfLoop((Transition) sourceElement) &&
-				((Transition) sourceElement).getSource() instanceof State; //&&
-				//Utils.getRootStatemachine(((Transition) sourceElement).getSource()).getInstances() == null; 
+				((Transition) sourceElement).getSource() instanceof State; 
 	}
 	
 

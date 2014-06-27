@@ -31,12 +31,6 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	}
 	
 	
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
-	
 	/**
 	 * Generates a new variable named as the states it represents
 	 */
@@ -48,7 +42,6 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	
 		Invariant newInvariant = Make.invariant(Strings.TYPEOF_ + sourceState.getName(), generatePredicate(sourceState), "");
 		
-		//TODO Attributes???	
 		ret.add(Make.descriptor(container, invariants, newInvariant, 1));
 		return ret;
 	}
@@ -59,14 +52,8 @@ public class State2TypingInvariantsRule extends AbstractRule  implements IRule  
 	 * @return
 	 */
 	private String generatePredicate (State sourceState){
-		 
-		//if(Utils.getRootStatemachine(sourceState).getInstances() == null)
+
 			return sourceState.getName() + Strings.B_IN + Strings.B_BOOL;
-//		else
-//			if(Utils.isRootStatemachine(Utils.getStatemachine(sourceState)))
-//				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getRootStatemachine(sourceState).getInstances().getName();
-//			else
-//				return sourceState.getName() + Strings.B_SUBSETEQ + Utils.getSuperState(Utils.getStatemachine(sourceState)).getName(); 
-		
+
 	}
 }
