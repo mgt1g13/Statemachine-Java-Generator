@@ -119,11 +119,9 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	private List<Action> state2initActionsActive(State s, Event v, State target){
 		List<Action> ret = new ArrayList<Action>();
 		String value;
-		//if(Utils.getRootStatemachine(s).getInstances() == null)
 		if(rootSm.getInstances() == null)
 			value = Strings.B_TRUE;
 		else
-			//value = Utils.getRootStatemachine(s).getInstances().getName();
 			value = rootSm.getInstances().getName();
 		
 		
@@ -143,11 +141,9 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	private List<Action> superState2initActionsActive(State s, Event event){
 		List<Action> ret = new ArrayList<Action>();
 		String value;
-//		if(Utils.getRootStatemachine(s).getInstances() == null)
 		if(rootSm.getInstances() == null)
 			value = Strings.B_TRUE;
 		else
-//			value = Utils.getRootStatemachine(s).getInstances().getName();
 			value = rootSm.getInstances().getName();
 		if(generatedStatus.get(s) == null)
 			ret.add(state2initAction(s, value));
@@ -187,9 +183,6 @@ public class Initial2InitActionsRule extends AbstractRule  implements IRule {
 	 * @return
 	 */
 	private Action state2initAction(State s, String value){
-		//Do nothing if initialisation to the given state has already been done
-		//if(generatedStatus.get(s) != null) return null;
-
 		generatedStatus.put(s, new Boolean(true));
 		return (Action) Make.action(Strings.INIT_ + s.getName(),
 				s.getName() + Strings.B_BEQ + value);
