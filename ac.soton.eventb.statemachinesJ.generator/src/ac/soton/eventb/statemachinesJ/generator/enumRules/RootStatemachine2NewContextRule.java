@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eventb.emf.core.EventBElement;
-import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.machine.Machine;
 
@@ -46,24 +45,36 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 
 
 		if(container.getRefines().size() != 0){
-			
-			Context abstractCtx = null;
-			for(Machine mac : container.getRefines()){
-				for(Context ctx : mac.getSees()){
-					if(ctx.getName().equals(mac.getName() + Strings._IMPLICIT_CONTEXT)){
-						System.out.println(ctx.getName());
-						abstractCtx = ctx;
-						break;
-					}
-				}
+			Context abstractCtx = getGeneratedAbstractContext(container);
 
-			}
 			if(abstractCtx != null)
 				ret.add(Make.descriptor(newCtx, _extends, abstractCtx,1 ));
 		}
 
 		return ret;
 
+	}
+	
+	
+	/**
+	 * Returns a context automatically generated seen by one of the 
+	 * machinhes mac refine
+	 * @param mac
+	 * @return
+	 */
+	private Context getGeneratedAbstractContext(Machine mac){
+		Context abstractCtx = null;
+		for(Machine imac : mac.getRefines()){
+			for(Context ctx : imac.getSees()){
+				if(ctx.getName().equals(imac.getName() + Strings._IMPLICIT_CONTEXT)){
+					System.out.println(ctx.getName());
+					abstractCtx = ctx;
+					break;
+				}
+			}
+
+		}
+		return abstractCtx;
 	}
 }
 
