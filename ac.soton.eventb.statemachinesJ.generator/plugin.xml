@@ -196,7 +196,7 @@
          </rule>
 		 <rule
                name="Enum_Transition2InitActionsActive"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Transition2InitActionsActiveRule"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2InitActionsActiveRule"
                source_class="Transition">
          </rule>
 		 <rule

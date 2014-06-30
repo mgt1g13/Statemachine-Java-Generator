@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.enumRules;
+package ac.soton.eventb.statemachinesJ.generator.rules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +40,9 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		Transition sourceTransition = (Transition) sourceElement;
-		if(!Utils.getRootStatemachine(sourceTransition.getTarget()).getTranslation().equals(TranslationKind.SINGLEVAR))
-			return false;
+
+//		if(!Utils.getRootStatemachine(sourceTransition.getTarget()).getTranslation().equals(TranslationKind.SINGLEVAR))
+//			return false;
 		for(Event e : sourceTransition.getElaborates()){
 			if(e.getName().equals(Strings.INIT))
 				return true;
@@ -54,6 +55,7 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
+
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		List<Action> generatedActions = new ArrayList<Action>();
 		Transition sourceTransition = (Transition) sourceElement;
@@ -167,13 +169,29 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	}
 
 	private Action state2initActionActive(State s) {
-		String name = Strings.INIT_ + Utils.getStatemachine(s).getName();
+		String name;
 		String expression = "";
-		if(rootSM.getInstances() == null)
-			expression = Utils.getStatemachine(s).getName() + Strings.B_BEQ + s.getName();
-		else
-			expression = Utils.getStatemachine(s).getName() + Strings.B_BEQ + rootSM.getInstances().getName() 
-			+ Strings.B_CPROD + Utils.asSet(s.getName());
+		if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
+			name = Strings.INIT_ + Utils.getStatemachine(s).getName();
+			if(rootSM.getInstances() == null)
+				expression = Utils.getStatemachine(s).getName() + Strings.B_BEQ + s.getName();
+			else
+				expression = Utils.getStatemachine(s).getName() + Strings.B_BEQ + rootSM.getInstances().getName() 
+				+ Strings.B_CPROD + Utils.asSet(s.getName());
+		}
+		else if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR)){
+			name = Strings.INIT_ + s.getName();
+			if(rootSM.getInstances() == null)
+				expression = s.getName() + Strings.B_BEQ  + Strings.B_TRUE;
+			else
+				expression = s.getName() + Strings.B_BEQ + rootSM.getInstances().getName();
+			
+		}
+		else{
+			name = "ERROR";
+			expression = Strings.TRANSLATION_KIND_NOT_SUPPORTED_ERROR;
+		}
+		mapOfGeneratedActions.put(s, expression);
 		return (Action) Make.action(name, expression);
 	}
 

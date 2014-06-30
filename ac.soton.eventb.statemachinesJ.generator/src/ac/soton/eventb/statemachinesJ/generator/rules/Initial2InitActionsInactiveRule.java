@@ -12,6 +12,7 @@ import org.eventb.emf.core.machine.Event;
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
+import ac.soton.eventb.emf.diagrams.generator.utils.Find;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.State;
@@ -24,7 +25,9 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 public class Initial2InitActionsInactiveRule extends AbstractRule  implements IRule {
 
 	private Map<State, Boolean> generatedStatus;
+	private List<GenerationDescriptor> generatedElements;
 	private Statemachine rootSm;
+	private Event initEvent;
 	
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
@@ -55,7 +58,7 @@ public class Initial2InitActionsInactiveRule extends AbstractRule  implements IR
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 
-		
+		this.generatedElements = generatedElements;
 		Transition sourceTransition = (Transition) (sourceElement);
 		
 		rootSm = (Statemachine) Utils.getRootStatemachine(sourceTransition.getTarget());
@@ -67,7 +70,7 @@ public class Initial2InitActionsInactiveRule extends AbstractRule  implements IR
 		
 
 	  
-		Event initEvent = getInitEvent(sourceTransition);
+		initEvent = getInitEvent(sourceTransition);
 		List<Action> generatedActions = (generateInactive(initEvent));
 
 		for(Action a : generatedActions){
@@ -127,7 +130,7 @@ public class Initial2InitActionsInactiveRule extends AbstractRule  implements IR
 			value = Strings.B_FALSE;
 		else
 			value = Strings.B_EMPTYSET;
-		if(generatedStatus.get(s) == null)
+		if(generatedStatus.get(s) == null && Find.generatedElement(generatedElements, initEvent, actions, Strings.INIT_ + s.getName()) == null)
 			ret.add(state2initAction(s, value));
 
 		for(Statemachine sm : s.getStatemachines()){
@@ -141,7 +144,6 @@ public class Initial2InitActionsInactiveRule extends AbstractRule  implements IR
 	private Action state2initAction(State s, String value){
 		//Do nothing if initialisation to the given state has already been done
 		//if(generatedStatus.get(s) != null) return null;
-
 		generatedStatus.put(s, new Boolean(true));
 		return (Action) Make.action(Strings.INIT_ + s.getName(),
 				s.getName() + Strings.B_BEQ + value);
