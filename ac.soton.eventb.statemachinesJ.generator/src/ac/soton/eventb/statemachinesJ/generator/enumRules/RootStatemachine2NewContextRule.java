@@ -35,20 +35,40 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
-	
-		
+
+
 		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
-		
+
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		Context newCtx = (Context) Make.context(Strings.CTX_NAME(container), "");
 		ret.add(Make.descriptor(Find.project(container), components, newCtx ,1));
 		ret.add(Make.descriptor(container, sees, newCtx, 1));
+
+
+		if(container.getRefines().size() != 0){
+			
+			Context abstractCtx = null;
+			for(Machine mac : container.getRefines()){
+				for(Context ctx : mac.getSees()){
+					if(ctx.getName().equals(mac.getName() + Strings._IMPLICIT_CONTEXT)){
+						System.out.println(ctx.getName());
+						abstractCtx = ctx;
+						break;
+					}
+				}
+
+			}
+			if(abstractCtx != null)
+				ret.add(Make.descriptor(newCtx, _extends, abstractCtx,1 ));
+		}
+
 		return ret;
-		
-		
-		
+
 	}
-	
-	
-	
 }
+
+
+
+	
+	
+	
