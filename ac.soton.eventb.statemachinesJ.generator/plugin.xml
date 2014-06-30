@@ -84,11 +84,6 @@
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2ConstraintInvariantsRule"
                source_class="State">
          </rule>
-         <rule
-               name="Initial2InitActions"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsRule"
-               source_class="Transition">
-         </rule>
 		<rule
                name="Initial2InitActionsInactive"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsInactiveRule"
@@ -195,7 +190,7 @@
                source_class="Statemachine">
          </rule>
 		 <rule
-               name="Enum_Transition2InitActionsActive"
+               name="Transition2InitActionsActive"
                rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2InitActionsActiveRule"
                source_class="Transition">
          </rule>
