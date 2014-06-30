@@ -515,6 +515,17 @@ public class Utils {
 		else return false; 
 				
 	}
+
+
+
+	/**
+	 * Returns the superstate of a given state
+	 * @param sourceState
+	 * @return
+	 */
+	public static State getSuperState(State sourceState) {
+		return (State) sourceState.eContainer().eContainer();
+	}
 	
 	
 }

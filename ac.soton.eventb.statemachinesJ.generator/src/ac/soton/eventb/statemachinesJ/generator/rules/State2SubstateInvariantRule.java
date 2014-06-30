@@ -40,7 +40,8 @@ public class State2SubstateInvariantRule extends AbstractRule  implements IRule 
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		State sourceState = (State)sourceElement;
-		State parentState = (State) sourceState.eContainer().eContainer();
+	
+		State parentState = Utils.getSuperState(sourceState);
 		Invariant newInvariant = Make.invariant(sourceState.getName() + Strings._SUBSTATEOF_ + parentState.getName(),
 				Utils.parenthesize(sourceState.getName() + Strings.B_EQ + Strings.B_TRUE) + Strings.B_IMPL + Utils.parenthesize(parentState.getName() + Strings.B_EQ + Strings.B_TRUE), "");
 		ret.add(Make.descriptor(container, invariants, newInvariant, 3));
