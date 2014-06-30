@@ -26,7 +26,8 @@ public class Statemachine2PartitionAxiomRule extends AbstractRule implements IRu
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+		return Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR) &&
+				((Statemachine) sourceElement).getRefines() == null;
 	}
 
 	/**
