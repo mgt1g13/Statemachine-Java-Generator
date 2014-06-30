@@ -35,7 +35,7 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	private Event initEvent;
 	
 	/**
-	 * Trnasformation only for the the transition that elaborates init
+	 * Transformation only for the the transition that elaborates init
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
@@ -88,12 +88,10 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	
 	
 	/**
-	 * Transfroms active target state to initialisation actions.
+	 * Transforms active target state to initialisation actions.
 	 * Generates actions for all the superstates of target state,
 	 * as well as actions for target state's statemachines.
 	 * 
-	 * XXX ASSUMING THE TARGET OF THE TRANSITION WHICH ELABORATES 
-	 * INIT IS A STATE
 	 * 
 	 * @param sourceTransition
 	 * @return

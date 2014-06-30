@@ -51,7 +51,6 @@ public class Initial2InitActionsInactiveRule extends AbstractRule  implements IR
 	 * 
 	 * Generates the intialisation actions
 	 * Implementing as previous implementation
-	 * TODO check if enabling all states reached from a Initial node is correct
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
