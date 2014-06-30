@@ -23,7 +23,6 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 
 public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	
-	//TODO Check what happens if there is already a witness with the generated name
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		return true;

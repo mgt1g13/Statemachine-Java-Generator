@@ -33,12 +33,6 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 	}
 	
 
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
-
 	
 	/**
 	 * SelfLoopTransition2Guard

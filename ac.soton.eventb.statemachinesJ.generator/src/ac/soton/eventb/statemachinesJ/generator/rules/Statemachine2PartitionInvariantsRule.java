@@ -76,7 +76,7 @@ public class Statemachine2PartitionInvariantsRule extends AbstractRule  implemen
 	}
 	
 	private Invariant partitionInv4NestedSM(Statemachine sm){
-		State parentState = Utils.getSuperState(sm); //TODO Check if it really finds the parent
+		State parentState = Utils.getSuperState(sm);
 		//FIXME Naming differs from different implementation
 		return Make.invariant(Strings.DISTINCT_STATES_IN_ + sm.getName(),
 				getStatePartitionAnticedent4NestedSM(sm, parentState) + "partition" + getStatePartitionContent(sm),

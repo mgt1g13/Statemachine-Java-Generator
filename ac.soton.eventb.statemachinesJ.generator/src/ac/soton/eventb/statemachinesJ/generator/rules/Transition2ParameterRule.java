@@ -24,8 +24,6 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
  */
 
 public class Transition2ParameterRule extends AbstractRule  implements IRule {
-
-	//TODO Check what happens if there is already a parameters with the generated name
 	
 	/**
 	 * Trasition2Parameters
@@ -63,7 +61,7 @@ public class Transition2ParameterRule extends AbstractRule  implements IRule {
 		List<Parameter> ret = new ArrayList<Parameter>();
 		Statemachine rootSm = Utils.getRootStatemachine(t.getTarget());
 		
-		if(rootSm.getInstances() != null){// && !Utils.containsParameterWithName(event, rootSm.getSelfName())){
+		if(rootSm.getInstances() != null){
 			ret.add(rootStatemachine2parameter(rootSm));
 		}
 		

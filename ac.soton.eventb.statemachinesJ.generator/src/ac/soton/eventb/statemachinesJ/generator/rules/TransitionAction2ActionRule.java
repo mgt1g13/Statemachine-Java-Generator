@@ -16,7 +16,7 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 
 public class TransitionAction2ActionRule extends AbstractRule  implements IRule {
 	
-	//TODO Check what happens if there is already a witness with the generated name
+
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		return true;
