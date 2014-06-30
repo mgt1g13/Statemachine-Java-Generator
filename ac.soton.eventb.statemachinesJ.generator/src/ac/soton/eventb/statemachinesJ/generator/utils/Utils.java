@@ -103,7 +103,6 @@ public class Utils {
 	 * @param sm
 	 * @return
 	 */
-	//TODO try to improve efficiency 
 	public static boolean hasFinalState(Statemachine sm){
 		
 		for(AbstractNode  nd : sm.getNodes()){
