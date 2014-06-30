@@ -41,8 +41,6 @@ public class Transition2InitActionsActiveRule extends AbstractRule  implements I
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		Transition sourceTransition = (Transition) sourceElement;
 
-//		if(!Utils.getRootStatemachine(sourceTransition.getTarget()).getTranslation().equals(TranslationKind.SINGLEVAR))
-//			return false;
 		for(Event e : sourceTransition.getElaborates()){
 			if(e.getName().equals(Strings.INIT))
 				return true;

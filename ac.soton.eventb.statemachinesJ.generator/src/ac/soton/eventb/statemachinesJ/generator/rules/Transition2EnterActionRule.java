@@ -1,7 +1,6 @@
 package ac.soton.eventb.statemachinesJ.generator.rules;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eventb.emf.core.EventBElement;
@@ -11,6 +10,7 @@ import org.eventb.emf.core.machine.Event;
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
+import ac.soton.eventb.emf.diagrams.generator.utils.Find;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Fork;
@@ -24,11 +24,11 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 	
 	private Statemachine rootSM;
-	private HashMap<State, ArrayList<String>> generatedElements = new HashMap<State, ArrayList<String>>();
+
 	
 	/**
 	 * Rule should only fire on non circular transitions. Note, No check is done
-	 * to wheter the event already contains an action named as the one generated.
+	 * to whether the event already contains an action named as the one generated.
 	 * The generator does not replace the user generated with the automatic one, 
 	 * and simply discard the latter.
 	 * 
@@ -70,8 +70,9 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 		for(Event ev : sourceTransition.getElaborates()){
 			if(!ev.getName().equals(Strings.INIT)){
 				for(Action a : generatedActions){
-					if (!a.getName().equals("")){
-						ret.add(Make.descriptor(ev, actions, a, 10));
+					if (!a.getName().equals("") &&
+							Find.generatedElement(generatedElements, ev, actions, a.getName()) == null){
+						ret.add(Make.descriptor(ev, actions, Make.action(a.getName(), a.getAction()), 10));
 					}
 				}				
 				
@@ -109,20 +110,15 @@ public class Transition2EnterActionRule extends AbstractRule  implements IRule {
 	 */
 	private Action state2enterAction(State s){
 		String name = Strings.ENTER_ + s.getName();
+
 		
-		if(generatedElements.get(s) == null){
-			ArrayList<String> newList = new ArrayList<String>();
-			newList.add(name);
-			generatedElements.put(s, newList);
+		if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR)){
 			
-		}
-		else
-			generatedElements.get(s).add(name);
-		
-		if(rootSM.getTranslation().equals(TranslationKind.MULTIVAR))
 			return (Action) Make.action(name, generateMultivarAction(s));
-		else if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR))
+		}
+		else if(rootSM.getTranslation().equals(TranslationKind.SINGLEVAR)){
 			return (Action) Make.action(name, generateSinglevarAction(s));
+		}
 		else
 			return (Action) Make.action(name, "<Statemachine translation error: unknown translation kind>");
 		

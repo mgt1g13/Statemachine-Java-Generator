@@ -66,7 +66,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 				generatedActions.addAll(generateLeaveActionsFromNode(sourceTransition.getSource(), sourceTransition, ev));
 			}
 			for(Action a : generatedActions){
-				ret.add(Make.descriptor(ev, actions, a, 1));
+					ret.add(Make.descriptor(ev, actions, Make.action(a.getName(), a.getAction()), 1));
 			}
 		}
 

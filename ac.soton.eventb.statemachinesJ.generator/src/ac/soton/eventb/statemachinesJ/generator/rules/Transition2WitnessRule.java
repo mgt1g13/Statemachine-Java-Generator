@@ -23,11 +23,7 @@ import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
 
 public class Transition2WitnessRule extends AbstractRule  implements IRule {
 	
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-	
-	}
+
 
 	/**
 	 * Trasition2Witness
