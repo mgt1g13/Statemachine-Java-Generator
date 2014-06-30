@@ -28,12 +28,6 @@ public class State2ConstraintInvariantsRule extends AbstractRule  implements IRu
 	
 	private Statemachine rootSM;
 	
-	@Override
-	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
-		return true;
-
-	}
-
 
 	/**
 	 * State2ConstraintInvariant
