@@ -40,7 +40,7 @@ public class Transition2WitnessRule extends AbstractRule  implements IRule {
 			if(!ev.getName().equals(Strings.INIT)){
 				List<Witness> generatedWitness = generateWitness(sourceTransition, ev);
 				for(Witness w : generatedWitness){
-					ret.add(Make.descriptor(ev, witnesses, w, 10));
+					ret.add(Make.descriptor(ev, witnesses, Make.witness(w.getName(), w.getPredicate()), 10));
 				}				
 				
 			}

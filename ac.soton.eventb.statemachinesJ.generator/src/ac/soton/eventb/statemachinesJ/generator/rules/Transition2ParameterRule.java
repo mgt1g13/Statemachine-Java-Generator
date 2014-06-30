@@ -40,7 +40,7 @@ public class Transition2ParameterRule extends AbstractRule  implements IRule {
 			if(!ev.getName().equals(Strings.INIT)){
 				List<Parameter> generatedParameters = generateParameters(sourceTransition, ev);
 				for(Parameter p : generatedParameters){
-					ret.add(Make.descriptor(ev, parameters, p, 10));
+					ret.add(Make.descriptor(ev, parameters, Make.parameter(p.getName(), p.getComment()), 10));
 				}
 				
 				

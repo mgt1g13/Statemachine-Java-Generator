@@ -31,7 +31,7 @@ public class TransitionParameter2GuardRule extends AbstractRule  implements IRul
 			
 			Guard grd = generateTransitionGuardFromTypedParameter(p);
 			for(Event e : sourceTransition.getElaborates()){
-				ret.add(Make.descriptor(e, guards, grd, 10));
+				ret.add(Make.descriptor(e, guards, Make.guard(grd.getName(), grd.getPredicate()), 10));
 			}
 			
 		}	
