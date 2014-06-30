@@ -20,12 +20,7 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class InitialTransition2SourceGuardRule extends AbstractRule  implements IRule {
 
-	
-	/**
-	 * TODO The number of calls to contains functions is inefficient
-	 * 
-	 */
-	
+
 	private Statemachine rootSM;
 	
 	
@@ -37,23 +32,10 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception{
 		Transition sourceTransition = (Transition) sourceElement;
-
-		//int shouldNotGenerate = 0;
-
-//		for(Event e : sourceTransition.getElaborates()){
-//			if(Utils.containsGuardWithPrefix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
-//					Utils.containsGuardWithSuffix(e, Strings.ISNOTIN_ + Utils.getStatemachine(sourceTransition.getSource()).getName()) ||
-//					e.getName().equals(Strings.INIT))
-//				shouldNotGenerate++;
-//
-//		}
-
-
 		return 
 				(sourceTransition.getSource() instanceof Initial) &&
 				Utils.isRootStatemachine(Utils.getStatemachine(sourceTransition.getSource())) &&
-				Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()));// &&
-//				!(shouldNotGenerate == sourceTransition.getElaborates().size());
+				Utils.hasFinalState(Utils.getStatemachine(sourceTransition.getSource()));
 
 
 	}
@@ -76,9 +58,6 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 		Guard grd = (Guard) Make.guard(name, predicate);
 		
 		for(Event e : sourceTransition.getElaborates()){
-//			if(!(Utils.containsGuardWithPrefix(e, name) ||
-//					Utils.containsGuardWithSuffix(e, name)) ||
-//					e.getName().equals(Strings.INIT))
 			if(!e.getName().equals(Strings.INIT))
 				ret.add(Make.descriptor(e, guards, grd, 10));
 		}
