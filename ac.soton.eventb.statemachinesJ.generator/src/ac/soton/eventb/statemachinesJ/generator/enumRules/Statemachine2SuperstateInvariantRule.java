@@ -19,6 +19,11 @@ import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
 
 public class Statemachine2SuperstateInvariantRule extends AbstractRule  implements IRule {
 
+	
+	/**
+	 * Only enabled for enumeration translation. Root statemachines is not used
+	 * 
+	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
 		TranslationKind translatioKind = Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation();
@@ -31,9 +36,7 @@ public class Statemachine2SuperstateInvariantRule extends AbstractRule  implemen
 	
 	
 	/**
-	 * Statesmachine2SuperstateRule
-	 * 
-	 * Generates a new variable named as the states it represents
+	 * Generates superstate axiom in the implicit context
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {

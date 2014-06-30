@@ -38,7 +38,9 @@ public class Statemachine2SetRule extends AbstractRule implements IRule{
 		return Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container)) != null;
 	}
 	
-	
+	/**
+	 * Generates the the sets for the enumeration translation
+	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();

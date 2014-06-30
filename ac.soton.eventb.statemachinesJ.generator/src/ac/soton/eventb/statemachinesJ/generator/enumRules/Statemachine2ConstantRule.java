@@ -38,7 +38,9 @@ public class Statemachine2ConstantRule extends AbstractRule implements IRule{
 		return Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container)) != null;
 	}
 	
-	
+	/**
+	 * Generates the NULL constants (to state that the state is not active)
+	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();

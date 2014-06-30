@@ -26,7 +26,8 @@ public class State2ConstantRule extends AbstractRule implements IRule{
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return Utils.getRootStatemachine((State) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+		return Utils.getRootStatemachine((State) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR)
+				&&((State)sourceElement).getRefines() == null;
 	}
 
 	/**
@@ -38,7 +39,9 @@ public class State2ConstantRule extends AbstractRule implements IRule{
 		return Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container)) != null;
 	}
 	
-	
+	/**
+	 * Generates the constants for the implicit context (from the states)
+	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
