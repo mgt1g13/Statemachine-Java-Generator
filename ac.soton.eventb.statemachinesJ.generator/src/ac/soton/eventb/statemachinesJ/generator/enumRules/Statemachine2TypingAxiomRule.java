@@ -26,7 +26,8 @@ public class Statemachine2TypingAxiomRule extends AbstractRule implements IRule{
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return ((Statemachine)sourceElement).getRefines() == null &&
+		Statemachine sourceSM = (Statemachine) sourceElement;
+		return sourceSM.getRefines() == null && (Utils.hasParentState(sourceSM) || Utils.hasFinalState(sourceSM)) &&
 				Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
 	}
 

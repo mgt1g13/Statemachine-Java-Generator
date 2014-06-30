@@ -26,7 +26,8 @@ public class Statemachine2SetRule extends AbstractRule implements IRule{
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+		return ((Statemachine)sourceElement).getRefines() == null &&
+				Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
 	}
 
 	/**
