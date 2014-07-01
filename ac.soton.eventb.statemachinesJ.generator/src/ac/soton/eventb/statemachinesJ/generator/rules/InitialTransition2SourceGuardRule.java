@@ -59,7 +59,7 @@ public class InitialTransition2SourceGuardRule extends AbstractRule  implements 
 		
 		for(Event e : sourceTransition.getElaborates()){
 			if(!e.getName().equals(Strings.INIT))
-				ret.add(Make.descriptor(e, guards, grd, 10));
+				ret.add(Make.descriptor(e, guards, Make.guard(grd.getName(), grd.isTheorem(), grd.getPredicate(), grd.getComment()), 10));
 		}
 		
 		return ret;

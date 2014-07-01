@@ -52,7 +52,7 @@ public class SelfLoopTransition2SourceGuardRule extends AbstractRule  implements
 		Guard grd = (Guard) Make.guard(name, predicate);
 		
 		for(Event e : sourceTransition.getElaborates()){
-			ret.add(Make.descriptor(e, guards, grd, 10));
+			ret.add(Make.descriptor(e, guards, Make.guard(grd.getName(), grd.isTheorem(), grd.getPredicate(),grd.getComment()), 10));
 			
 		}
 		

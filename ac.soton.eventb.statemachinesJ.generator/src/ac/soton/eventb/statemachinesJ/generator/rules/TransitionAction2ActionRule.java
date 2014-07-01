@@ -39,7 +39,7 @@ public class TransitionAction2ActionRule extends AbstractRule  implements IRule 
 		for(Event ev : sourceTransition.getElaborates()){
 			if(!ev.getName().equals(Strings.INIT)){
 				for(Action a : generatedActions){
-					ret.add(Make.descriptor(ev, actions, a, 10));
+					ret.add(Make.descriptor(ev, actions, Make.action(a.getName(), a.getAction(), a.getComment()), 10));
 				}				
 				
 			}

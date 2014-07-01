@@ -61,7 +61,7 @@ public class Transition2SourceGuardRule extends AbstractRule  implements IRule {
 		for(Guard grd : generatedGuards){
 			for(Event e : sourceTransition.getElaborates()){
 				if(!e.getName().equals(Strings.INIT) && grd.getName() != null){
-					ret.add(Make.descriptor(e, guards, grd, 10));
+					ret.add(Make.descriptor(e, guards, Make.guard(grd.getName(), grd.isTheorem(), grd.getPredicate(), grd.getComment()), 10));
 				}
 			}
 		}
