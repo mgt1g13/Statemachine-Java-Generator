@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.varRules;
+package ac.soton.eventb.statemachines.generator.varRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.TranslationKind;
-import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
-import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
+import ac.soton.eventb.statemachines.generator.strings.Strings;
+import ac.soton.eventb.statemachines.generator.utils.Utils;
 
 public class State2TypingInvariantsRule extends AbstractRule  implements IRule  {
 	
