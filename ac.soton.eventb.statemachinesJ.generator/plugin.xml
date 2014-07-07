@@ -55,28 +55,28 @@
             root_source_class="Statemachine"
             sourcePackage="http://soton.ac.uk/models/eventb/statemachines/2014">
          <rule
-               name="State2Variables"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2VariablesRule"
+               name="Vars_State2Variables"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2VariablesRule"
                source_class="State">
          </rule>
          <rule
-               name="State2TypingInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2TypingInvariantsRule"
+               name="Vars_State2TypingInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2TypingInvariantsRule"
                source_class="State">
          </rule>
          <rule
-               name="LiftedRootStatemachine2TypingInvariant"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.LiftedRootStatemachine2TypingInvariantRule"
+               name="Vars_LiftedRootStatemachine2TypingInvariant"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.LiftedRootStatemachine2TypingInvariantRule"
                source_class="Statemachine">
          </rule>
 		 <rule
-               name="Statemachine2PartitionInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Statemachine2PartitionInvariantsRule"
+               name="Vars_Statemachine2PartitionInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.Statemachine2PartitionInvariantsRule"
                source_class="Statemachine">
          </rule>
          <rule
-               name="State2SubstateInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2SubstateInvariantRule"
+               name="Vars_State2SubstateInvariants"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2SubstateInvariantRule"
                source_class="State">
          </rule>
          <rule
@@ -85,8 +85,8 @@
                source_class="State">
          </rule>
 		<rule
-               name="Initial2InitActionsInactive"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Initial2InitActionsInactiveRule"
+               name="Vars_Initial2InitActionsInactive"
+               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.Initial2InitActionsInactiveRule"
                source_class="Transition">
          </rule>
          <rule
