@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.rules;
+package ac.soton.eventb.statemachines.generator.rules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +21,8 @@ import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
 import ac.soton.eventb.statemachines.TranslationKind;
-import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
-import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
+import ac.soton.eventb.statemachines.generator.strings.Strings;
+import ac.soton.eventb.statemachines.generator.utils.Utils;
 
 public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	

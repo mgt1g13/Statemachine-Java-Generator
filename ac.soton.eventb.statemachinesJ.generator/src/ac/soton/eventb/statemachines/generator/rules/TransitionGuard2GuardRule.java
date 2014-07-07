@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.rules;
+package ac.soton.eventb.statemachines.generator.rules;
 
 import java.util.ArrayList;
 import java.util.List;

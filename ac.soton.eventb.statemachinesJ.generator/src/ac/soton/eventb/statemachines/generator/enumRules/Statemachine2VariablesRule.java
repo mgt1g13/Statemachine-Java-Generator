@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.enumRules;
+package ac.soton.eventb.statemachines.generator.enumRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.TranslationKind;
-import ac.soton.eventb.statemachinesJ.generator.utils.Utils;
+import ac.soton.eventb.statemachines.generator.utils.Utils;
 
 public class Statemachine2VariablesRule extends AbstractRule  implements IRule {
 

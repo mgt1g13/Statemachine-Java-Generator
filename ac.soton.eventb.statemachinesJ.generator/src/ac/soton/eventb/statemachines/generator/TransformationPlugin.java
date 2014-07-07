@@ -6,7 +6,7 @@
  * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  */
-package ac.soton.eventb.statemachinesJ.generator;
+package ac.soton.eventb.statemachines.generator;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;

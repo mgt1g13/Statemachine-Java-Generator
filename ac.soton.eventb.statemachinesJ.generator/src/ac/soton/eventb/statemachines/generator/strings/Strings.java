@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.strings;
+package ac.soton.eventb.statemachines.generator.strings;
 
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 

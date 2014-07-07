@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.rules;
+package ac.soton.eventb.statemachines.generator.rules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Transition;
-import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
+import ac.soton.eventb.statemachines.generator.strings.Strings;
 
 public class TransitionParameter2GuardRule extends AbstractRule  implements IRule {
 

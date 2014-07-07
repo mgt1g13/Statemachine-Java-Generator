@@ -1,4 +1,4 @@
-package ac.soton.eventb.statemachinesJ.generator.utils;
+package ac.soton.eventb.statemachines.generator.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import ac.soton.eventb.statemachines.Junction;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.Transition;
-import ac.soton.eventb.statemachinesJ.generator.strings.Strings;
+import ac.soton.eventb.statemachines.generator.strings.Strings;
 
 public class Utils {
 	private Utils(){

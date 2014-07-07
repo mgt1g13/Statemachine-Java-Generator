@@ -56,147 +56,147 @@
             sourcePackage="http://soton.ac.uk/models/eventb/statemachines/2014">
          <rule
                name="Vars_State2Variables"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2VariablesRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.State2VariablesRule"
                source_class="State">
          </rule>
          <rule
                name="Vars_State2TypingInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2TypingInvariantsRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.State2TypingInvariantsRule"
                source_class="State">
          </rule>
          <rule
                name="Vars_LiftedRootStatemachine2TypingInvariant"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.LiftedRootStatemachine2TypingInvariantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.LiftedRootStatemachine2TypingInvariantRule"
                source_class="Statemachine">
          </rule>
 		 <rule
                name="Vars_Statemachine2PartitionInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.Statemachine2PartitionInvariantsRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.Statemachine2PartitionInvariantsRule"
                source_class="Statemachine">
          </rule>
          <rule
                name="Vars_State2SubstateInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.State2SubstateInvariantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.State2SubstateInvariantRule"
                source_class="State">
          </rule>
          <rule
                name="State2ConstraintInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.State2ConstraintInvariantsRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.State2ConstraintInvariantsRule"
                source_class="State">
          </rule>
 		<rule
                name="Vars_Initial2InitActionsInactive"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.varRules.Initial2InitActionsInactiveRule"
+               rule_class="ac.soton.eventb.statemachines.generator.varRules.Initial2InitActionsInactiveRule"
                source_class="Transition">
          </rule>
          <rule
                name="Transition2Parameter"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2ParameterRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2ParameterRule"
                source_class="Transition">
          </rule>
 		 <rule
                name="Transition2Witness"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2WitnessRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2WitnessRule"
                source_class="Transition">
          </rule>
          <rule
                name="TransitionAction2Action"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionAction2ActionRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.TransitionAction2ActionRule"
                source_class="Transition">
          </rule>
           <rule
                name="Transition2EnterAction"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2EnterActionRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2EnterActionRule"
                source_class="Transition">
          </rule>
           <rule
                name="Transition2LeaveAction"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2LeaveActionRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2LeaveActionRule"
                source_class="Transition">
          </rule>
           <rule
                name="TransitionGuard2Guard"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionGuard2GuardRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.TransitionGuard2GuardRule"
                source_class="Transition">
          </rule>
          <rule
                name="TransitioParameterd2Guard"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.TransitionParameter2GuardRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.TransitionParameter2GuardRule"
                source_class="Transition">
          </rule>                  
          <rule
                name="InitialTransition2SourceGuard"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.InitialTransition2SourceGuardRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.InitialTransition2SourceGuardRule"
                source_class="Transition">
          </rule>
          <rule
                name="Transition2SourceGuard"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2SourceGuardRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2SourceGuardRule"
                source_class="Transition">
          </rule>
          <rule
                name="SelfLoopTransition2SourceGuard"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.SelfLoopTransition2SourceGuardRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.SelfLoopTransition2SourceGuardRule"
                source_class="Transition">
          </rule>
          <rule
                name="RootStatemachine2NewContext"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.RootStatemachine2NewContextRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.RootStatemachine2NewContextRule"
                source_class="Statemachine">
          </rule> 
 		 <rule
                name="Enum_Statemachine2Variables"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2VariablesRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2VariablesRule"
                source_class="Statemachine">
          </rule>
          <rule
                name="Enum_Statemachine2TypingInvariants"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2TypingInvariantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2TypingInvariantRule"
                source_class="Statemachine">
          </rule>    
          <rule
                name="Enum_Statemachine2SuperStateInvariant"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2SuperstateInvariantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2SuperstateInvariantRule"
                source_class="Statemachine">
          </rule> 
          <rule
                name="Enum_Statemachine2Set"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2SetRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2SetRule"
                source_class="Statemachine">
          </rule>
 		 <rule
                name="Enum_Statemachine2Constant"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2ConstantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2ConstantRule"
                source_class="Statemachine">
          </rule>
          <rule
                name="Enum_State2Constant"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.State2ConstantRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.State2ConstantRule"
                source_class="State">
          </rule>
          <rule
                name="Enum_Statemachine2TypingAxiom"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2TypingAxiomRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2TypingAxiomRule"
                source_class="Statemachine">
          </rule> 
          <rule
                name="Enum_State2TypingAxiom"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.State2TypingAxiomRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.State2TypingAxiomRule"
                source_class="State">
          </rule>
 		 <rule
                name="Enum_Statemachine2ParitionAxiom"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Statemachine2PartitionAxiomRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Statemachine2PartitionAxiomRule"
                source_class="Statemachine">
          </rule>
 		 <rule
                name="Transition2InitActionsActive"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.rules.Transition2InitActionsActiveRule"
+               rule_class="ac.soton.eventb.statemachines.generator.rules.Transition2InitActionsActiveRule"
                source_class="Transition">
          </rule>
 		 <rule
                name="Enum_Transition2InitActionsInactive"
-               rule_class="ac.soton.eventb.statemachinesJ.generator.enumRules.Transition2InitActionsInactiveRule"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.Transition2InitActionsInactiveRule"
                source_class="Transition">
          </rule>                                                                                 
         </generator>
