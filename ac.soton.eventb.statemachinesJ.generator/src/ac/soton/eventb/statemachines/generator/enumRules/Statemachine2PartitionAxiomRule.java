@@ -44,18 +44,35 @@ public class Statemachine2PartitionAxiomRule extends AbstractRule implements IRu
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
+		
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		
 		Statemachine sourceSM = (Statemachine) sourceElement;
 		Context ctx = (Context)Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container));
 		
-		Axiom newSet = (Axiom) Make.axiom(Strings.TYPEOF_ + sourceSM.getName() + Strings._NULL,
-				sourceSM.getName() + Strings._NULL + Strings.B_IN + sourceSM.getName() + Strings._STATES,
+		
+		String nullPartition = "";
+		if(Utils.hasParentState(sourceSM) || Utils.hasFinalState(sourceSM)){
+			nullPartition = Utils.asSet(sourceSM.getName() + Strings._NULL);
+		}
+		else
+			nullPartition = null;
+		
+		List<String> states = Utils.getStateNamesAsSingletons(sourceSM);
+		if(nullPartition != null) states.add(nullPartition);
+		
+		
+		Axiom newSet = (Axiom) Make.axiom(Strings.DISTINCT_STATES_IN_ + sourceSM.getName() + Strings._STATES,
+				Strings.B_PARTITION + Utils.parenthesize(sourceSM.getName() + Strings._STATES + Strings.B_COM +
+						Utils.toString(states, Strings.B_COM)),
 				"");
 		
-		ret.add(Make.descriptor(ctx, axioms, newSet, 1));
+		ret.add(Make.descriptor(ctx, axioms, newSet, 10));
 		return ret;
+		
+		
+
 	}
 	
 }
