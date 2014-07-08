@@ -1,7 +1,6 @@
 package ac.soton.eventb.statemachines.generator.rules;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eventb.emf.core.EventBElement;
@@ -12,6 +11,7 @@ import org.eventb.emf.core.machine.Event;
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
+import ac.soton.eventb.emf.diagrams.generator.utils.Find;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Any;
@@ -27,7 +27,7 @@ import ac.soton.eventb.statemachines.generator.utils.Utils;
 public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	
 	private Statemachine rootSM;
-	private HashMap<Event, ArrayList<String>> generatedElements = new HashMap<Event, ArrayList<String>>();
+	private List<GenerationDescriptor> generatedElements;
 	
 	/**
 	 * Rule should only fire on non circular transitions
@@ -56,7 +56,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		Transition sourceTransition = (Transition) sourceElement;
 		List<Action> generatedActions = new ArrayList<Action>();
-		
+		this.generatedElements = generatedElements;
 		rootSM = Utils.getRootStatemachine(sourceTransition.getTarget());
 		
 
@@ -226,11 +226,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 						Utils.asSet(rootSM.getSelfName());
 		
 		
-		if(generatedElements.get(e) == null){
-			ArrayList<String> newList = new ArrayList<String>();
-			newList.add(name);
-		}
-		return (Action) Make.action(Strings.LEAVE_ + s.getName(), action);
+		return (Action) Make.action(name, action);
 	}
 
 
@@ -256,9 +252,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 * @return
 	 */
 	private boolean canGenerateLeaveEvent(EventBNamed s, Event e){
-		return !Utils.containsAction(e, Strings.ENTER_ + s.getName()) &&
-				//&& !Utils.containsAction(e, Strings.LEAVE_ + s.getName()) 
-				/*&&*/ (generatedElements.get(e) == null || !generatedElements.get(e).contains(Strings.LEAVE_ + s.getName()));
+		return 	Find.generatedElement(generatedElements, e, actions, Strings.ENTER_ + s.getName()) == null;
 	}
 
 	
@@ -314,7 +308,7 @@ public class Transition2LeaveActionRule extends AbstractRule  implements IRule {
 	 */
 	private List<Action> enum_statemachine2leaveActions(Statemachine sm, Transition t, Event e) {
 		List<Action> ret = new ArrayList<Action>();
-		if(canGenerateLeaveEvent(sm, e) && !Utils.isLocalToSource(t))
+		if(canGenerateLeaveEvent(sm, e) && !Utils.isLocalToSource(t) && !Utils.contains(sm, t.getTarget()))
 			ret.add(enum_statemachine2leaveAction(sm, e));
 		
 		for(AbstractNode node : sm.getNodes()){
