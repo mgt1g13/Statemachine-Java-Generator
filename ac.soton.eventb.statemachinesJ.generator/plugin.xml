@@ -203,6 +203,11 @@
                name="Enum_Transition2InitActionsInactive"
                rule_class="ac.soton.eventb.statemachines.generator.enumRules.Transition2InitActionsInactiveRule"
                source_class="Transition">
+         </rule> 
+         <rule
+               name="Enum_RemoverRedundantContexts"
+               rule_class="ac.soton.eventb.statemachines.generator.enumRules.RemoveRedundantContextsRule"
+               source_class="Statemachine">
          </rule>                                                                                 
         </generator>   
      </extension>
