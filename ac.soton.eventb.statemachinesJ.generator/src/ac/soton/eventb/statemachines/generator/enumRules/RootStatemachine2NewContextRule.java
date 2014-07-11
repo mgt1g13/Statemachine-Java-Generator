@@ -24,8 +24,11 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 	
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {	
+		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
+
 		return Utils.isRootStatemachine((Statemachine)sourceElement) &&
-				((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+				((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR) && 
+				getImplicitContext(container) == null;
 				
 	
 	}
@@ -39,30 +42,32 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		
-		Context ctx = null;
-		
-		for(Context ictx : container.getSees()){
-			if(ictx.getName().equals(container.getName() + Strings._IMPLICIT_CONTEXT)){
-				ctx = ictx;
-				break;
-			}
-		}
-		
-		
-		
-		if(ctx == null){
-			System.out.println("IAMHERE");
-			ctx =  (Context) Make.context(container.getName() + Strings._IMPLICIT_CONTEXT, "");
-			ret.add(Make.descriptor(Find.project(container), components,ctx ,1));
-			ret.add(Make.descriptor(container, seesNames, ctx.getName(), 1));
-		}
-		
+		Context ctx = getImplicitContext(container);
+
+
+		ctx =  (Context) Make.context(container.getName() + Strings._IMPLICIT_CONTEXT, "");
+		ret.add(Make.descriptor(Find.project(container), components,ctx ,1));
+		ret.add(Make.descriptor(container, seesNames, ctx.getName(), 1));
+
+
 
 		return ret;
 
 	}
 	
-
+	private Context getImplicitContext(Machine m){
+		Context ctx = null;
+		for(Context ictx : m.getSees()){
+			if(ictx.getName().equals(m.getName() + Strings._IMPLICIT_CONTEXT)){
+				ctx = ictx;
+				break;
+			}
+		}
+		return ctx;
+	}
+	
+	
+	
 }
 
 
