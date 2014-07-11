@@ -34,48 +34,35 @@ public class RootStatemachine2NewContextRule extends AbstractRule implements IRu
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
-
-
+		
 		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
 
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
-		Context newCtx = (Context) Make.context(Strings.CTX_NAME(container), "");
-		ret.add(Make.descriptor(Find.project(container), components, newCtx ,1));
-		ret.add(Make.descriptor(container, sees, newCtx, 1));
-
-
-		if(container.getRefines().size() != 0){
-			Context abstractCtx = getGeneratedAbstractContext(container);
-
-			if(abstractCtx != null)
-				ret.add(Make.descriptor(newCtx, _extends, abstractCtx,1 ));
+		
+		Context ctx = null;
+		
+		for(Context ictx : container.getSees()){
+			if(ictx.getName().equals(container.getName() + Strings._IMPLICIT_CONTEXT)){
+				ctx = ictx;
+				break;
+			}
 		}
+		
+		
+		
+		if(ctx == null){
+			System.out.println("IAMHERE");
+			ctx =  (Context) Make.context(container.getName() + Strings._IMPLICIT_CONTEXT, "");
+			ret.add(Make.descriptor(Find.project(container), components,ctx ,1));
+			ret.add(Make.descriptor(container, seesNames, ctx.getName(), 1));
+		}
+		
 
 		return ret;
 
 	}
 	
-	
-	/**
-	 * Returns a context automatically generated seen by one of the 
-	 * machinhes mac refine
-	 * @param mac
-	 * @return
-	 */
-	private Context getGeneratedAbstractContext(Machine mac){
-		Context abstractCtx = null;
-		for(Machine imac : mac.getRefines()){
-			for(Context ctx : imac.getSees()){
-				if(ctx.getName().equals(imac.getName() + Strings._IMPLICIT_CONTEXT)){
-					System.out.println(ctx.getName());
-					abstractCtx = ctx;
-					break;
-				}
-			}
 
-		}
-		return abstractCtx;
-	}
 }
 
 

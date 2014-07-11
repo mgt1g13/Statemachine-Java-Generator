@@ -41,7 +41,7 @@ public class Validator implements IValidator {
 		}
 		StringBuilder errors = new StringBuilder();
 		for (IMarker marker : markers) {
-			int severity = marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
+			//int severity = marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
 			if (true) //severity == IMarker.SEVERITY_ERROR)
 				errors.append("\n"
 						+ marker.getAttribute(IMarker.MESSAGE, "unknown error"));

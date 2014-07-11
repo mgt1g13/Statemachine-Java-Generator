@@ -8,6 +8,7 @@ import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 import org.eventb.emf.core.context.Constant;
 import org.eventb.emf.core.context.Context;
+import org.eventb.emf.core.machine.Machine;
 
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
@@ -37,6 +38,11 @@ public class Statemachine2ConstantRule extends AbstractRule implements IRule{
 	@Override
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
+		
+		for(Context ctx : ((Machine)container).getSees())
+			if(ctx.getName().equals(Strings.CTX_NAME(container)))
+				return true;
+		
 		return Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container)) != null;
 	}
 	
@@ -50,6 +56,14 @@ public class Statemachine2ConstantRule extends AbstractRule implements IRule{
 		
 		Statemachine sourceSM = (Statemachine) sourceElement;
 		Context ctx = (Context)Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container));
+		
+		if(ctx == null){
+			for(Context ictx : ((Machine)container).getSees())
+				if(ictx.getName().equals(Strings.CTX_NAME(container))){
+					ctx = ictx;
+					break;
+				}
+		}
 		
 		Constant newConstant = (Constant) Make.constant(sourceSM.getName() + Strings._NULL, "");
 		

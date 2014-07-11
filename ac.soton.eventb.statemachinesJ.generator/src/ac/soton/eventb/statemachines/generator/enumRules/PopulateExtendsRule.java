@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
-import org.eventb.emf.core.context.Axiom;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.machine.Machine;
 
@@ -20,17 +19,18 @@ import ac.soton.eventb.statemachines.TranslationKind;
 import ac.soton.eventb.statemachines.generator.strings.Strings;
 import ac.soton.eventb.statemachines.generator.utils.Utils;
 
-public class Statemachine2PartitionAxiomRule extends AbstractRule implements IRule{
-
-	/**
-	 * Only enabled for enumeration translation
-	 */
+public class PopulateExtendsRule extends AbstractRule implements IRule{
+	
+	
+	
 	@Override
-	public boolean enabled(EventBElement sourceElement) throws Exception  {
-		return Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR) &&
-				((Statemachine) sourceElement).getRefines() == null;
+	public boolean enabled(EventBElement sourceElement) throws Exception  {	
+		return Utils.isRootStatemachine((Statemachine)sourceElement) &&
+				((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+				
+	
 	}
-
+	
 	/**
 	 * Waits until context has not being generated
 	 */
@@ -38,55 +38,66 @@ public class Statemachine2PartitionAxiomRule extends AbstractRule implements IRu
 	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
 		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
 		for(Context ctx : ((Machine)container).getSees())
-			if(ctx.getName().equals(Strings.CTX_NAME(container))){
+			if(ctx.getName().equals(Strings.CTX_NAME(container)))
 				return true;
-			}
-		
 		return Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container)) != null;
 	}
 	
+	
+	
 	/**
-	 * Generates Parition axioms
+	 * Generates the implicit context
 	 */
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
-		
-		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
-		EventBNamedCommentedComponentElement container = (EventBNamedCommentedComponentElement)EcoreUtil.getRootContainer(sourceElement);
-		
-		Statemachine sourceSM = (Statemachine) sourceElement;
-		Context ctx = (Context)Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container));
-		
-		if(ctx == null){
-			for(Context ictx : ((Machine)container).getSees())
-				if(ictx.getName().equals(Strings.CTX_NAME(container))){
-					ctx = ictx;
-					break;
-				}
-		}
-		
 
-		String nullPartition = "";
-		if(Utils.hasParentState(sourceSM) || Utils.hasFinalState(sourceSM)){
-			nullPartition = Utils.asSet(sourceSM.getName() + Strings._NULL);
+
+		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
+
+		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
+		Context ctx = (Context) Find.generatedElement(generatedElements, Find.project(container), components, container.getName() + Strings._IMPLICIT_CONTEXT);
+		
+		if(ctx == null)
+			for(Context ictx : ((Machine)container).getSees())
+				if(ictx.getName().equals(Strings.CTX_NAME(container)))
+					ctx = ictx;
+		
+		
+		if(container.getRefines().size() != 0){
+			List<Context> abstractCtxs = getGeneratedAbstractContext(container);
+
+			for(Context ictx : abstractCtxs)
+				if(!ctx.getExtendsNames().contains(ictx.getName()))
+					ret.add(Make.descriptor(ctx, extendsNames, ictx.getName(),1 ));
 		}
-		else
-			nullPartition = null;
-		
-		List<String> states = Utils.getStateNamesAsSingletons(sourceSM);
-		if(nullPartition != null) states.add(nullPartition);
-		
-		
-		Axiom newSet = (Axiom) Make.axiom(Strings.DISTINCT_STATES_IN_ + sourceSM.getName() + Strings._STATES,
-				Strings.B_PARTITION + Utils.parenthesize(sourceSM.getName() + Strings._STATES + Strings.B_COM +
-						Utils.toString(states, Strings.B_COM)),
-				"");
-		
-		ret.add(Make.descriptor(ctx, axioms, newSet, 10));
+
 		return ret;
-		
-		
 
 	}
 	
+	
+	/**
+	 * Returns a context automatically generated seen by one of the 
+	 * machinhes mac refine
+	 * @param mac
+	 * @return
+	 */
+	private List<Context> getGeneratedAbstractContext(Machine mac){
+		List<Context> abstractCtxs = new ArrayList<Context>();
+		for(Machine imac : mac.getRefines()){
+			for(Context ctx : imac.getSees()){
+				if(ctx.getName().equals(imac.getName() + Strings._IMPLICIT_CONTEXT)){
+					abstractCtxs.add(ctx);
+				}
+			}
+
+		}
+		return abstractCtxs;
+	}
 }
+
+
+
+	
+	
+	

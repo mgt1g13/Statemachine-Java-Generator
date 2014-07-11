@@ -11,6 +11,7 @@ import org.eventb.emf.core.machine.Machine;
 import ac.soton.eventb.emf.diagrams.generator.AbstractRule;
 import ac.soton.eventb.emf.diagrams.generator.GenerationDescriptor;
 import ac.soton.eventb.emf.diagrams.generator.IRule;
+import ac.soton.eventb.emf.diagrams.generator.utils.Find;
 import ac.soton.eventb.emf.diagrams.generator.utils.Make;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.TranslationKind;
@@ -24,45 +25,57 @@ public class RemoveRedundantContextsRule extends AbstractRule implements IRule{
 	 */
 	@Override
 	public boolean enabled(EventBElement sourceElement) throws Exception  {
+		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
 		return Utils.isRootStatemachine((Statemachine)sourceElement) &&
-				Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR);
+				Utils.getRootStatemachine((Statemachine) sourceElement).getTranslation().equals(TranslationKind.SINGLEVAR) &&
+				container.getRefines().size() > 0 &&
+				!container.getSeesNames().contains(Strings.CTX_NAME(container));
 	}
 
+
+	@Override
+	public boolean dependenciesOK(EventBElement sourceElement, final List<GenerationDescriptor> generatedElements) throws Exception  {
+		Machine container = (Machine)EcoreUtil.getRootContainer(sourceElement);
+		Context implicitContext = (Context) Find.generatedElement(generatedElements, Find.project(container), components, Strings.CTX_NAME(container));
+		
+		System.out.println(implicitContext);
+		if(implicitContext == null)
+			return false;
+		
+		
+		for(Machine m : container.getRefines()){
+			String extendedContext = (String) Find.generatedElement(generatedElements, implicitContext, extendsNames, Strings.CTX_NAME(m));
+			if(extendedContext !=  null){
+				System.out.println(extendedContext);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
 	@Override
 	public List<GenerationDescriptor> fire(EventBElement sourceElement, List<GenerationDescriptor> generatedElements) throws Exception {
 		List<GenerationDescriptor> ret = new ArrayList<GenerationDescriptor>();
 		Machine sourceMachine = (Machine)EcoreUtil.getRootContainer(sourceElement);
 		
-		List<Context> redundantCTX = new ArrayList<Context>();
-		
+		Context implicitContext = (Context) Find.generatedElement(generatedElements, Find.project(sourceMachine), components, Strings.CTX_NAME(sourceMachine));
+				
 		//For needed just so the implicit context created for sourceMachine does not get erased
+				
 		for(Machine im : sourceMachine.getRefines()){
-			redundantCTX.addAll(generateRedundantContextsToBeRemove(im));
+			String extendedContext = (String) Find.generatedElement(generatedElements, implicitContext, extendsNames, Strings.CTX_NAME(im));
+			if(extendedContext != null){
+				Context redundant = (Context) Find.named(sourceMachine.getSees(), extendedContext);
+				ret.add(Make.descriptor(sourceMachine, sees, redundant, 1, true));
+			}
 		}
 		
-		
-		
-		
-		for(Context ctx : redundantCTX ){
-			ret.add(Make.descriptor(sourceMachine, sees, ctx, 1, true));
-			
-		}
 
 		return ret;
 	}
 	
 
-	private List<Context> generateRedundantContextsToBeRemove(Machine m){
-		List<Context> ret = new ArrayList<Context>();
-		ret.add((Context)Make.context(m.getName() + Strings._IMPLICIT_CONTEXT, ""));
-		
-		for(Machine im : m.getRefines()){
-			ret.addAll(generateRedundantContextsToBeRemove(im));
-		}
-	
-		return ret;
-		
-	}
-	
 }
 
